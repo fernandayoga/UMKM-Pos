@@ -63,12 +63,48 @@ Design System: Modern Business SaaS + Clean Retail Software (Anti-AI-Slop compli
 - [x] Peningkatan kontras background layout dashboard (`bg-[#f1f5f9]`) agar card dan grid box putih lebih "pop out" dan mudah dibedakan oleh mata pengguna.
 - [x] Penerapan double-layered drop shadow yang lebih tegas dan elegan (`shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_2px_rgba(15,23,42,0.04)]`) serta hover micro-lift (`hover:-translate-y-0.5 hover:shadow-[0_6px_16px_rgba(15,23,42,0.08)]`) pada seluruh KPI cards, grid item POS, produk cards, dan container form.
 - [x] Penguatan garis border slate (`border-slate-200/90`) di seluruh komponen grid dan tabel, menjaga estetika profesional retail SaaS tanpa melanggar prinsip anti-AI-slop.
-- [x] Verifikasi build produksi (`npm run build`) dengan 26 rute berhasil dikompilasi sempurna.
+
+### Phase 9: Redesain Tema KasirFlow (Pine Green & Mint Modern SaaS)
+- [x] **Palet Warna Signature**:
+  - Warna primer utama: Deep Pine/Forest Green (`#0f5b53`) untuk button utama, tab aktif navigasi, dan indikator kunci.
+  - Warna aksen: Fresh Mint / Cyan-Aquamarine (`#5eead4`, `#2dd4bf`, `#ccfbf1`) untuk badge status, tombol tambah (+) kartu produk kasir, kembalian tunai, dan tag `BETA`.
+  - Warna latar kanvas: Cool light slate (`#f8fafc`) dengan kontras bersih terhadap card putih solid.
+- [x] **Sidebar Modern KasirFlow**:
+  - Brand identity: "KasirFlow - POS & Retail Inventory" dengan icon pine green solid.
+  - Store branch selector: Kotak cabang "Toko Maju Jaya • Cabang 1" dengan indikator status hijau.
+  - Navigasi menu: Active item dengan solid pine green (`bg-[#0f5b53] text-white shadow-xs font-semibold`).
+  - Item "Asisten AI" dilengkapi badge mint `BETA`.
+  - Kartu profil kasir/owner di bagian bawah dengan avatar inisial dan tombol logout instan.
+- [x] **Topbar KasirFlow**:
+  - Breadcrumb dinamis: `KasirFlow › [Nama Halaman]`.
+  - Quick Search bar dengan shortcut `Ctrl+K`.
+  - Status pill: `● Kasir Buka • Shift Pagi`.
+  - Tombol bantuan, lonceng notifikasi (badge 2), dan avatar user.
+- [x] **Dashboard Ringkasan Bisnis**:
+  - Greeting banner "Selamat Pagi, [User]" dengan badge "Shift Berjalan" dan filter waktu.
+  - 4 Kartu KPI modern dengan badge pertumbuhan persentase (`+12.4%`, `+8 jam ini`, `Margin %`).
+  - Grafik AreaChart tren omzet harian dengan lekukan halus pine green dan strip analitik jam sibuk serta metode pembayaran (QRIS/Tunai/Transfer).
+  - 3 Panel aksi cepat di kolom kanan: "Perlu Restock Segera" (dengan tombol pesan hijau), "Transaksi Terakhir", dan "Rekomendasi KasirFlow AI".
+  - Tabel "Produk Terlaris Hari Ini" dengan ranking melingkar (1, 2, 3) mint, SKU, unit terjual, dan badge tren.
+- [x] **Halaman Kasir (POS)**:
+  - Barcode scanner input bar dengan badge `F2` dan status `● Scanner Siap`.
+  - Filter kategori pill dengan active tab pine green dan penghitung jumlah produk.
+  - Kartu produk retail dengan thumbnail gambar, badge stok mengambang (aman/kritis), harga tebal, dan tombol mint `+`.
+  - Sidebar keranjang & pembayaran inline terpadu: nomor nota `#INV-...`, info pelanggan walk-in, item stepper, rincian diskon/pajak, tab metode bayar (Tunai/QRIS/Transfer), tombol nominal uang pas, kotak kembalian mint, dan tombol utama "✓ Selesaikan Pembayaran (F9)".
+  - Bar jalan pintas keyboard di bagian bawah (`F1`, `F2`, `F4`, `F8`, `F9`).
+- [x] **Produk & Inventori**:
+  - Header dengan action "Ekspor Data", "Impor Massal", dan "+ Tambah Produk Baru".
+  - 5 Kartu strip metrik inventori (Total Produk Aktif, Stok Aman, Stok Menipis, Habis/Kosong, Nilai HPP).
+  - Tabel master produk dengan thumbnail, barcode SKU, margin % badge, stok fisik, status aman/menipis/habis, dan aksi edit/hapus.
+  - 3 Kartu advisori bisnis di bagian bawah (Peringatan Reorder Cepat, Margin Terbaik Toko, Integrasi Barcode Scanner).
+- [x] **KasirFlow AI Assistant**:
+  - Drawer slide-over dengan tema pine green, badge chip pertanyaan rekomendasi, dan bubble chat pine green.
+  - Integrasi event listener untuk membuka drawer secara otomatis saat menu Asisten AI atau tombol rekomendasi diklik.
 
 ---
 
-## 2. Fitur yang Sedang Dikerjakan (In Progress)
-- Seluruh fitur utama, penyempurnaan visual, dan pengujian produksi telah selesai dilaksanakan 100%.
+## 2. Status Proyek
+- Kompilasi produksi `npm run build` sukses 100% (26 rute berhasil dikompilasi tanpa error).
 
 ---
 

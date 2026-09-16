@@ -28,6 +28,13 @@ export function AIAssistantDrawer() {
     "Berapa ringkasan inventori toko?",
   ];
 
+  // Listen for external open drawer trigger
+  useEffect(() => {
+    const handleOpen = () => setIsOpen(true);
+    window.addEventListener("open-ai-drawer", handleOpen);
+    return () => window.removeEventListener("open-ai-drawer", handleOpen);
+  }, []);
+
   // Auto-scroll on new message
   useEffect(() => {
     if (isOpen) {
@@ -102,13 +109,13 @@ export function AIAssistantDrawer() {
       <button
         onClick={() => setIsOpen(true)}
         className={cn(
-          "fixed bottom-5 right-5 z-40 flex items-center gap-2 px-3.5 py-2.5 rounded-full bg-blue-600 text-white shadow-md hover:bg-blue-700 transition-all text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2",
+          "fixed bottom-5 right-5 z-40 flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#0f5b53] text-white shadow-lg hover:bg-[#0c4e47] active:scale-95 transition-all text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#0f5b53] focus:ring-offset-2",
           isOpen && "scale-0 opacity-0 pointer-events-none"
         )}
         aria-label="Buka AI Business Assistant"
       >
-        <Sparkles className="w-4 h-4 text-amber-300" />
-        <span>AI Business Assistant</span>
+        <Sparkles className="w-4 h-4 text-[#5eead4]" />
+        <span>KasirFlow AI</span>
       </button>
 
       {/* Slide-over Drawer */}
@@ -119,17 +126,17 @@ export function AIAssistantDrawer() {
         )}
       >
         {/* Drawer Header */}
-        <div className="p-3.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+        <div className="p-3.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/80">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-[#0f5b53] text-white flex items-center justify-center shadow-xs">
               <Bot className="w-4 h-4" />
             </div>
             <div>
               <h3 className="text-xs font-bold text-slate-900 leading-tight">
-                AI Business Assistant
+                KasirFlow AI Assistant
               </h3>
               <p className="text-[10px] text-slate-500">
-                Terhubung ke Data Toko MongoDB
+                Data Toko & Analitik Cerdas
               </p>
             </div>
           </div>
@@ -163,7 +170,7 @@ export function AIAssistantDrawer() {
                 key={q}
                 onClick={() => handleSendMessage(q)}
                 disabled={isLoading}
-                className="text-[11px] px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-slate-700 hover:border-blue-400 hover:text-blue-700 transition-colors text-left disabled:opacity-50"
+                className="text-[11px] px-2.5 py-1 bg-white border border-teal-200/90 rounded-lg text-slate-700 hover:border-[#0f5b53] hover:text-[#0f5b53] hover:bg-teal-50/50 transition-colors text-left disabled:opacity-50 shadow-2xs"
               >
                 {q}
               </button>
@@ -185,8 +192,8 @@ export function AIAssistantDrawer() {
                 className={cn(
                   "w-6 h-6 rounded-full shrink-0 flex items-center justify-center text-[10px]",
                   msg.role === "user"
-                    ? "bg-slate-800 text-white"
-                    : "bg-blue-100 text-blue-700"
+                    ? "bg-[#0f5b53] text-white"
+                    : "bg-[#ccfbf1] text-[#0f5b53]"
                 )}
               >
                 {msg.role === "user" ? (
@@ -200,7 +207,7 @@ export function AIAssistantDrawer() {
                 className={cn(
                   "p-3.5 rounded-xl max-w-[85%] leading-relaxed whitespace-pre-line text-xs font-normal",
                   msg.role === "user"
-                    ? "bg-blue-600 text-white rounded-tr-none"
+                    ? "bg-[#0f5b53] text-white rounded-tr-none shadow-xs"
                     : "bg-slate-100 text-slate-800 rounded-tl-none border border-slate-200/60"
                 )}
               >
@@ -212,11 +219,11 @@ export function AIAssistantDrawer() {
           {isLoading && (
             <div className="flex items-center gap-2 text-xs text-slate-500 pl-8 pt-1">
               <div className="flex gap-1">
-                <span className="w-1.5 h-1.5 bg-blue-600 rounded-full animate-pulse" />
-                <span className="w-1.5 h-1.5 bg-blue-600 rounded-full animate-pulse delay-150" />
-                <span className="w-1.5 h-1.5 bg-blue-600 rounded-full animate-pulse delay-300" />
+                <span className="w-1.5 h-1.5 bg-[#0f5b53] rounded-full animate-pulse" />
+                <span className="w-1.5 h-1.5 bg-[#0f5b53] rounded-full animate-pulse delay-150" />
+                <span className="w-1.5 h-1.5 bg-[#0f5b53] rounded-full animate-pulse delay-300" />
               </div>
-              <span className="text-[11px] font-medium">
+              <span className="text-[11px] font-medium text-slate-600">
                 Mengambil data faktual toko dari MongoDB...
               </span>
             </div>
@@ -239,12 +246,12 @@ export function AIAssistantDrawer() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={isLoading}
-              className="flex-1 px-3 py-2 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="flex-1 px-3 py-2 text-xs rounded-lg border border-slate-200 bg-slate-50/60 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#0f5b53]"
             />
             <button
               type="submit"
               disabled={!input.trim() || isLoading}
-              className="p-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-40 transition-colors"
+              className="p-2 rounded-lg bg-[#0f5b53] text-white hover:bg-[#0c4e47] disabled:opacity-40 transition-colors shadow-xs"
               aria-label="Kirim"
             >
               <Send className="w-4 h-4" />

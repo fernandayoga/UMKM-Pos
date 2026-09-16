@@ -77,7 +77,7 @@ export default function SalesHistoryPage() {
             placeholder="Cari nomor invoice (INV-...)"
             value={searchInvoice}
             onChange={(e) => setSearchInvoice(e.target.value)}
-            className="w-full h-9 pl-9 pr-3 rounded-lg border border-slate-300 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+            className="w-full h-9 pl-9 pr-3 rounded-lg border border-slate-300 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-[#0f5b53] focus:border-transparent"
           />
         </form>
 
@@ -86,7 +86,7 @@ export default function SalesHistoryPage() {
           <select
             value={period}
             onChange={(e) => setPeriod(e.target.value)}
-            className="h-9 px-3 text-xs rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-600"
+            className="h-9 px-3 text-xs rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#0f5b53]"
           >
             <option value="all">Semua Waktu</option>
             <option value="today">Hari Ini</option>
@@ -98,7 +98,7 @@ export default function SalesHistoryPage() {
           <select
             value={paymentMethod}
             onChange={(e) => setPaymentMethod(e.target.value)}
-            className="h-9 px-3 text-xs rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-600"
+            className="h-9 px-3 text-xs rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#0f5b53]"
           >
             <option value="">Semua Metode</option>
             <option value="cash">Tunai (Cash)</option>
@@ -159,7 +159,7 @@ export default function SalesHistoryPage() {
                           s.paymentMethod === "cash"
                             ? "bg-slate-100 text-slate-700 border border-slate-200"
                             : s.paymentMethod === "qris"
-                            ? "bg-blue-50 text-blue-700 border border-blue-200"
+                            ? "bg-[#ccfbf1] text-[#0f5b53] border border-[#99f6e4]"
                             : "bg-purple-50 text-purple-700 border border-purple-200"
                         }`}
                       >
@@ -174,7 +174,7 @@ export default function SalesHistoryPage() {
                     <td className="py-3 px-4 text-right">
                       <button
                         onClick={() => setSelectedSale(s)}
-                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors"
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold text-[#0f5b53] bg-teal-50 hover:bg-teal-100 border border-teal-200 transition-colors"
                       >
                         <Eye className="w-3.5 h-3.5" />
                         <span>Detail Nota</span>

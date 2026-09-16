@@ -4,26 +4,26 @@
 
 @layer base {
   :root {
-    --background: #f1f5f9; /* slate-100: clean contrast against white boxes */
+    --background: #f8fafc; /* light cool slate */
     --foreground: #0f172a; /* slate-900 */
     --card: #ffffff;
     --card-foreground: #0f172a;
     --popover: #ffffff;
     --popover-foreground: #0f172a;
-    --primary: #2563eb; /* reliable business blue */
+    --primary: #0f5b53; /* deep pine / forest green (KasirFlow signature) */
     --primary-foreground: #ffffff;
     --secondary: #e2e8f0;
     --secondary-foreground: #0f172a;
     --muted: #f1f5f9;
     --muted-foreground: #64748b;
-    --accent: #f1f5f9;
-    --accent-foreground: #0f172a;
+    --accent: #ccfbf1;
+    --accent-foreground: #0f5b53;
     --destructive: #ef4444;
     --destructive-foreground: #ffffff;
     --border: #e2e8f0;
     --input: #cbd5e1;
-    --ring: #2563eb;
-    --radius: 0.5rem;
+    --ring: #0f5b53;
+    --radius: 0.625rem;
   }
 
   .dark {
