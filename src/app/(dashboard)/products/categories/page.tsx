@@ -174,7 +174,7 @@ export default function CategoriesPage() {
                       <div className="flex items-center justify-end gap-1.5">
                         <button
                           onClick={() => handleOpenEdit(c)}
-                          className="p-1.5 rounded-lg text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                          className="p-1.5 rounded-lg text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors"
                           title="Edit Kategori"
                         >
                           <Edit2 className="w-3.5 h-3.5" />
@@ -222,7 +222,7 @@ export default function CategoriesPage() {
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Catatan tambahan mengenai jenis kategori ini"
               rows={3}
-              className="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600"
             />
           </div>
 

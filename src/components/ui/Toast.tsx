@@ -76,7 +76,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
                 <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0" />
               )}
               {item.type === "info" && (
-                <Info className="w-4 h-4 text-blue-600 flex-shrink-0" />
+                <Info className="w-4 h-4 text-emerald-600 flex-shrink-0" />
               )}
               <span>{item.message}</span>
             </div>

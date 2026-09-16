@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import { Menu, Search, HelpCircle, Bell } from "lucide-react";
-import { useSession } from "next-auth/react";
-import { usePathname } from "next/navigation";
+import { Menu, LogOut, Calendar } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
+import { formatDate } from "@/lib/utils";
 
 interface TopbarProps {
   onMenuClick: () => void;
@@ -11,23 +11,10 @@ interface TopbarProps {
 
 export function Topbar({ onMenuClick }: TopbarProps) {
   const { data: session } = useSession();
-  const pathname = usePathname();
-
-  const getPageTitle = (path: string) => {
-    if (path === "/") return "Ringkasan Bisnis";
-    if (path.startsWith("/pos")) return "Operasional Kasir";
-    if (path.startsWith("/products")) return "Master Produk & Stok";
-    if (path.startsWith("/inventory")) return "Inventori Toko";
-    if (path.startsWith("/suppliers")) return "Mitra Supplier";
-    if (path.startsWith("/sales")) return "Riwayat Penjualan";
-    if (path.startsWith("/reports")) return "Laporan Keuangan";
-    if (path.startsWith("/users")) return "Kelola Karyawan";
-    if (path.startsWith("/settings")) return "Pengaturan Toko";
-    return "Operasional Toko";
-  };
+  const todayStr = formatDate(new Date(), false);
 
   return (
-    <header className="h-14 bg-white border-b border-slate-200 px-4 sm:px-6 flex items-center justify-between sticky top-0 z-30 shadow-2xs">
+    <header className="h-14 bg-white border-b border-slate-200 px-4 sm:px-6 flex items-center justify-between sticky top-0 z-30 shrink-0">
       <div className="flex items-center gap-3">
         <button
           onClick={onMenuClick}
@@ -37,54 +24,32 @@ export function Topbar({ onMenuClick }: TopbarProps) {
           <Menu className="w-5 h-5" />
         </button>
 
-        {/* Breadcrumb style from reference */}
-        <div className="flex items-center gap-1.5 text-xs text-slate-600 font-medium">
-          <span className="text-slate-800 font-bold">KasirFlow</span>
-          <span className="text-slate-300">›</span>
-          <span className="text-slate-500">{getPageTitle(pathname)}</span>
+        <div className="hidden sm:flex items-center gap-2 text-xs text-slate-500">
+          <Calendar className="w-3.5 h-3.5 text-slate-400" />
+          <span>{todayStr}</span>
         </div>
       </div>
 
-      {/* Global Quick Search (Ctrl+K) */}
-      <div className="hidden md:flex items-center gap-2 bg-slate-50 border border-slate-200/90 px-3 py-1.5 rounded-lg text-xs text-slate-400 w-64 lg:w-80">
-        <Search className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-        <span className="truncate">Cari produk, transaksi... [Ctrl+K]</span>
-        <kbd className="ml-auto text-[10px] bg-white border border-slate-200 px-1 py-0.5 rounded text-slate-400 font-mono shadow-2xs">
-          Ctrl K
-        </kbd>
-      </div>
-
-      {/* Right status & badges */}
       <div className="flex items-center gap-3">
-        {/* Shift status pill */}
-        <div className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-2xs">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span>Kasir Buka • Shift Pagi</span>
-        </div>
-
-        {/* Help icon */}
-        <button
-          className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
-          title="Bantuan & Panduan"
-        >
-          <HelpCircle className="w-4 h-4" />
-        </button>
-
-        {/* Notification icon */}
-        <button
-          className="relative p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
-          title="Notifikasi"
-        >
-          <Bell className="w-4 h-4" />
-          <span className="absolute top-1 right-1 w-3.5 h-3.5 bg-rose-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
-            2
+        <div className="text-right">
+          <span className="text-xs font-semibold text-slate-800 block leading-tight">
+            {session?.user?.name || "Kasir"}
           </span>
-        </button>
-
-        {/* User avatar thumbnail */}
-        <div className="w-8 h-8 rounded-full bg-[#0f5b53]/10 text-[#0f5b53] border border-[#0f5b53]/30 flex items-center justify-center font-bold text-xs shadow-2xs">
-          {(session?.user?.name || "B").charAt(0).toUpperCase()}
+          <span className="text-[10px] text-slate-400 capitalize">
+            {session?.user?.role === "owner" ? "Pemilik Toko" : "Kasir Aktif"}
+          </span>
         </div>
+
+        <div className="h-4 w-px bg-slate-200 mx-0.5" />
+
+        <button
+          onClick={() => signOut({ callbackUrl: "/login" })}
+          className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+          title="Keluar dari akun"
+        >
+          <LogOut className="w-4 h-4" />
+          <span className="hidden sm:inline">Keluar</span>
+        </button>
       </div>
     </header>
   );

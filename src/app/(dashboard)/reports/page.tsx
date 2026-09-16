@@ -202,7 +202,7 @@ export default function ReportsPage() {
           <span className="text-xs text-slate-500 font-semibold tracking-wide">
             Total Produk Terjual
           </span>
-          <p className="text-2xl font-black text-[#0f5b53] my-1.5 tracking-tight">
+          <p className="text-2xl font-black text-emerald-700 my-1.5 tracking-tight">
             {summary.totalItemsSold} pcs
           </p>
           <span className="text-[11px] text-slate-400 font-medium">
@@ -219,21 +219,21 @@ export default function ReportsPage() {
               Tren Pendapatan & Laba Kotor Harian
             </h2>
             <p className="text-xs text-slate-500">
-              Perbandingan pendapatan kotor (Omzet) terhadap margin laba bersih toko
+              Perbandingan omzet penjualan kotor dengan estimasi laba kotor harian
             </p>
           </div>
         </div>
 
         {isLoading ? (
           <div className="h-64 flex items-center justify-center text-xs text-slate-400">
-            Memuat grafik analitik finansial...
+            Menyiapkan grafik...
           </div>
         ) : chartData.length === 0 ? (
           <div className="h-64 flex items-center justify-center text-xs text-slate-400 border border-dashed border-slate-200 rounded-lg">
-            Tidak ada transaksi pada periode yang dipilih.
+            Belum ada data penjualan pada periode yang dipilih.
           </div>
         ) : (
-          <div className="h-64 w-full">
+          <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
@@ -265,8 +265,8 @@ export default function ReportsPage() {
                     value === "revenue" ? "Omzet Penjualan" : "Laba Kotor"
                   }
                 />
-                <Bar dataKey="revenue" name="revenue" fill="#0f5b53" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="profit" name="profit" fill="#2dd4bf" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="revenue" name="revenue" fill="#059669" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="profit" name="profit" fill="#34d399" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -298,7 +298,7 @@ export default function ReportsPage() {
                     </span>
                     <span className="text-[10px] text-slate-400 font-mono">{p.sku}</span>
                   </div>
-                  <span className="font-bold text-blue-700 shrink-0">
+                  <span className="font-bold text-emerald-700 shrink-0">
                     {p.totalSold} terjual
                   </span>
                 </div>

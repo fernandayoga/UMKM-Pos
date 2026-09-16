@@ -20,7 +20,7 @@ export function Badge({
         variant === "success" && "bg-emerald-50 text-emerald-700 border border-emerald-200",
         variant === "warning" && "bg-amber-50 text-amber-700 border border-amber-200",
         variant === "danger" && "bg-rose-50 text-rose-700 border border-rose-200",
-        variant === "info" && "bg-blue-50 text-blue-700 border border-blue-200",
+        variant === "info" && "bg-emerald-50 text-emerald-700 border border-emerald-200",
         variant === "neutral" && "bg-slate-100 text-slate-700 border border-slate-200",
         className
       )}
@@ -33,7 +33,7 @@ export function Badge({
             variant === "success" && "bg-emerald-500",
             variant === "warning" && "bg-amber-500",
             variant === "danger" && "bg-rose-500",
-            variant === "info" && "bg-blue-500",
+            variant === "info" && "bg-emerald-500",
             variant === "neutral" && "bg-slate-400"
           )}
         />

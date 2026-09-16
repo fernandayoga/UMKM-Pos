@@ -288,7 +288,7 @@ export default function InventoryPage() {
             placeholder="Cari produk atau SKU..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full h-9 pl-9 pr-3 rounded-lg border border-slate-300 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+            className="w-full h-9 pl-9 pr-3 rounded-lg border border-slate-300 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent"
           />
         </div>
 
@@ -304,6 +304,16 @@ export default function InventoryPage() {
             Semua
           </button>
           <button
+            onClick={() => setStatusFilter("safe")}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+              statusFilter === "safe"
+                ? "bg-emerald-700 text-white shadow-xs"
+                : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
+            }`}
+          >
+            Aman
+          </button>
+          <button
             onClick={() => setStatusFilter("low")}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
               statusFilter === "low"
@@ -311,7 +321,7 @@ export default function InventoryPage() {
                 : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
             }`}
           >
-            Menipis ({lowStockCount})
+            Menipis
           </button>
           <button
             onClick={() => setStatusFilter("out")}
@@ -321,17 +331,7 @@ export default function InventoryPage() {
                 : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
             }`}
           >
-            Habis ({outOfStockCount})
-          </button>
-          <button
-            onClick={() => setStatusFilter("safe")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
-              statusFilter === "safe"
-                ? "bg-emerald-600 text-white shadow-xs"
-                : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
-            }`}
-          >
-            Aman ({safeStockCount})
+            Habis (0)
           </button>
         </div>
       </div>
@@ -345,8 +345,8 @@ export default function InventoryPage() {
         ) : filteredProducts.length === 0 ? (
           <EmptyState
             icon={Boxes}
-            title="Tidak ada produk yang cocok"
-            description="Tidak ada item yang sesuai dengan kriteria filter stok saat ini."
+            title="Tidak ada data produk yang cocok"
+            description="Periksa kata kunci pencarian atau filter status stok Anda."
           />
         ) : (
           <div className="overflow-x-auto">
@@ -358,12 +358,15 @@ export default function InventoryPage() {
                   <th className="py-3 px-4 text-center">Stok Saat Ini</th>
                   <th className="py-3 px-4 text-center">Batas Minimum</th>
                   <th className="py-3 px-4 text-center">Status</th>
-                  <th className="py-3 px-4 text-right">Aksi Cepat</th>
+                  <th className="py-3 px-4 text-right">Aksi Stok</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {filteredProducts.map((p) => (
-                  <tr key={p._id} className="hover:bg-slate-50/70 transition-colors">
+                  <tr
+                    key={p._id}
+                    className="hover:bg-slate-50/70 transition-colors"
+                  >
                     <td className="py-3 px-4">
                       <span className="font-semibold text-slate-900 block text-xs">
                         {p.name}
@@ -379,12 +382,14 @@ export default function InventoryPage() {
                       </span>
                     </td>
 
-                    <td className="py-3 px-4 text-center font-bold text-slate-900 text-sm">
-                      {p.stock} <span className="text-slate-400 text-xs font-normal">{p.unit}</span>
+                    <td className="py-3 px-4 text-center font-bold text-slate-900">
+                      {p.stock}{" "}
+                      <span className="text-slate-400 font-normal">{p.unit}</span>
                     </td>
 
-                    <td className="py-3 px-4 text-center text-slate-500 font-medium">
-                      {p.minimumStock} {p.unit}
+                    <td className="py-3 px-4 text-center text-slate-600">
+                      {p.minimumStock}{" "}
+                      <span className="text-slate-400 font-normal">{p.unit}</span>
                     </td>
 
                     <td className="py-3 px-4 text-center">
@@ -395,7 +400,7 @@ export default function InventoryPage() {
                       <div className="flex items-center justify-end gap-1.5">
                         <button
                           onClick={() => handleOpenStockIn(p._id)}
-                          className="px-2.5 py-1 rounded bg-blue-50 text-blue-700 hover:bg-blue-100 text-xs font-semibold transition-colors"
+                          className="px-2.5 py-1 rounded bg-emerald-50 text-emerald-700 hover:bg-emerald-100 text-xs font-semibold transition-colors"
                         >
                           + Stock In
                         </button>
@@ -436,7 +441,7 @@ export default function InventoryPage() {
                 setStockInForm({ ...stockInForm, productId: e.target.value })
               }
               required
-              className="w-full h-9 px-3 text-xs rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full h-9 px-3 text-xs rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600"
             >
               {products.map((p) => (
                 <option key={p._id} value={p._id}>
@@ -455,7 +460,7 @@ export default function InventoryPage() {
               onChange={(e) =>
                 setStockInForm({ ...stockInForm, supplierId: e.target.value })
               }
-              className="w-full h-9 px-3 text-xs rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full h-9 px-3 text-xs rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600"
             >
               <option value="">Tanpa Supplier Khusus</option>
               {suppliers.map((s) => (
@@ -541,7 +546,7 @@ export default function InventoryPage() {
                 })
               }
               required
-              className="w-full h-9 px-3 text-xs rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full h-9 px-3 text-xs rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600"
             >
               {products.map((p) => (
                 <option key={p._id} value={p._id}>
@@ -608,7 +613,7 @@ export default function InventoryPage() {
                 setAdjustForm({ ...adjustForm, reason: e.target.value })
               }
               required
-              className="w-full h-9 px-3 text-xs rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full h-9 px-3 text-xs rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600"
             />
           </div>
 

@@ -82,7 +82,7 @@ export default function SettingsPage() {
               type="text"
               value={receiptFooter}
               onChange={(e) => setReceiptFooter(e.target.value)}
-              className="w-full h-9 px-3 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full h-9 px-3 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600"
             />
             <p className="text-[10px] text-slate-400">
               Teks ini akan tercetak di bagian paling bawah setiap nota pembelian thermal 58mm/80mm.

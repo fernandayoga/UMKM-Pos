@@ -193,7 +193,7 @@ export default function UsersPage() {
                           {u.name}
                         </span>
                         {isCurrent && (
-                          <span className="text-[10px] text-blue-600 font-medium">
+                          <span className="text-[10px] text-emerald-600 font-medium">
                             (Akun Anda Saat Ini)
                           </span>
                         )}
@@ -208,7 +208,7 @@ export default function UsersPage() {
                           className={`px-2 py-0.5 rounded text-[10px] font-semibold uppercase ${
                             u.role === "owner"
                               ? "bg-purple-50 text-purple-700 border border-purple-200"
-                              : "bg-blue-50 text-blue-700 border border-blue-200"
+                              : "bg-emerald-50 text-emerald-700 border border-emerald-200"
                           }`}
                         >
                           {u.role === "owner" ? "Owner" : "Kasir"}
@@ -243,7 +243,7 @@ export default function UsersPage() {
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={() => handleOpenEdit(u)}
-                            className="p-1.5 rounded-lg text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                            className="p-1.5 rounded-lg text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors"
                             title="Edit Pengguna"
                           >
                             <Edit2 className="w-3.5 h-3.5" />
@@ -314,7 +314,7 @@ export default function UsersPage() {
                   setFormData({ ...formData, role: e.target.value as UserRole })
                 }
                 disabled={editingUser?._id === currentUserId}
-                className="w-full h-9 px-3 text-xs rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 disabled:bg-slate-100"
+                className="w-full h-9 px-3 text-xs rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600 disabled:bg-slate-100"
               >
                 <option value="cashier">Kasir (POS & Info Produk)</option>
                 <option value="owner">Owner (Akses Penuh Bisnis)</option>
@@ -331,7 +331,7 @@ export default function UsersPage() {
                   setFormData({ ...formData, isActive: e.target.value === "active" })
                 }
                 disabled={editingUser?._id === currentUserId}
-                className="w-full h-9 px-3 text-xs rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 disabled:bg-slate-100"
+                className="w-full h-9 px-3 text-xs rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600 disabled:bg-slate-100"
               >
                 <option value="active">Aktif (Dapat Login)</option>
                 <option value="inactive">Nonaktif (Dilarang Login)</option>

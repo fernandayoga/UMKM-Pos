@@ -132,7 +132,7 @@ export function ConfirmDialog({
               "px-3.5 py-1.5 text-xs font-medium text-white rounded-lg transition-colors disabled:opacity-50",
               isDanger
                 ? "bg-rose-600 hover:bg-rose-700"
-                : "bg-blue-600 hover:bg-blue-700"
+                : "bg-emerald-600 hover:bg-emerald-700"
             )}
           >
             {isLoading ? "Memproses..." : confirmText}

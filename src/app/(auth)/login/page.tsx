@@ -50,7 +50,7 @@ export default function LoginPage() {
       <div className="w-full max-w-sm">
         {/* Brand identity */}
         <div className="text-center mb-8">
-          <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center text-white mx-auto shadow-sm mb-3">
+          <div className="w-12 h-12 rounded-xl bg-emerald-600 flex items-center justify-center text-white mx-auto shadow-sm mb-3">
             <Store className="w-6 h-6" />
           </div>
           <h1 className="text-xl font-bold text-slate-900 tracking-tight">
@@ -109,7 +109,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => handleFillDemo("owner@example.com", "owner123")}
-                className="p-2.5 text-left rounded-xl border border-slate-200/90 bg-white shadow-xs hover:border-blue-400 hover:shadow hover:bg-blue-50/40 transition-all text-xs"
+                className="p-2.5 text-left rounded-xl border border-slate-200/90 bg-white shadow-xs hover:border-emerald-400 hover:shadow hover:bg-emerald-50/40 transition-all text-xs"
               >
                 <span className="font-semibold text-slate-800 block">Owner</span>
                 <span className="text-[10px] text-slate-400">owner@example.com</span>
@@ -117,7 +117,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => handleFillDemo("cashier@example.com", "cashier123")}
-                className="p-2.5 text-left rounded-xl border border-slate-200/90 bg-white shadow-xs hover:border-blue-400 hover:shadow hover:bg-blue-50/40 transition-all text-xs"
+                className="p-2.5 text-left rounded-xl border border-slate-200/90 bg-white shadow-xs hover:border-emerald-400 hover:shadow hover:bg-emerald-50/40 transition-all text-xs"
               >
                 <span className="font-semibold text-slate-800 block">Kasir</span>
                 <span className="text-[10px] text-slate-400">cashier@example.com</span>

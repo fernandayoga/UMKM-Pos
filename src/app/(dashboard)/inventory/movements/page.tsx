@@ -64,7 +64,7 @@ export default function InventoryMovementsPage() {
             onClick={() => setTypeFilter("SALE")}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
               typeFilter === "SALE"
-                ? "bg-blue-600 text-white"
+                ? "bg-emerald-600 text-white"
                 : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
             }`}
           >
@@ -143,7 +143,7 @@ export default function InventoryMovementsPage() {
                         <span
                           className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold ${
                             m.type === "SALE"
-                              ? "bg-blue-50 text-blue-700 border border-blue-200"
+                              ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
                               : m.type === "STOCK_IN"
                               ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
                               : "bg-purple-50 text-purple-700 border border-purple-200"

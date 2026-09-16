@@ -226,7 +226,7 @@ export default function SuppliersPage() {
                       <div className="flex items-center justify-end gap-1.5">
                         <button
                           onClick={() => handleOpenHistory(s)}
-                          className="p-1.5 rounded-lg text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                          className="p-1.5 rounded-lg text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors"
                           title="Lihat Riwayat Pasokan"
                         >
                           <History className="w-3.5 h-3.5" />
@@ -235,7 +235,7 @@ export default function SuppliersPage() {
                           <>
                             <button
                               onClick={() => handleOpenEdit(s)}
-                              className="p-1.5 rounded-lg text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                              className="p-1.5 rounded-lg text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors"
                               title="Edit Supplier"
                             >
                               <Edit2 className="w-3.5 h-3.5" />
@@ -309,7 +309,7 @@ export default function SuppliersPage() {
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
               placeholder="Pemasok produk tertentu, jadwal pengiriman, syarat pembayaran, dll."
               rows={3}
-              className="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600"
             />
           </div>
 
