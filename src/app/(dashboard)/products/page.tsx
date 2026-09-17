@@ -51,7 +51,10 @@ export default function ProductsPage() {
     stock: "",
     minimumStock: "5",
     unit: "pcs" as ProductUnit,
+    image: "",
   });
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -112,6 +115,7 @@ export default function ProductsPage() {
   // Open Form Modal
   const handleOpenAdd = () => {
     setEditingProduct(null);
+    setSelectedImage(null);
     setFormData({
       name: "",
       sku: "",
@@ -122,6 +126,7 @@ export default function ProductsPage() {
       stock: "0",
       minimumStock: "5",
       unit: "pcs",
+      image: "",
     });
     setFormErrors({});
     setIsFormModalOpen(true);
@@ -129,6 +134,7 @@ export default function ProductsPage() {
 
   const handleOpenEdit = (p: IProduct) => {
     setEditingProduct(p);
+    setSelectedImage(null);
     setFormData({
       name: p.name,
       sku: p.sku,
@@ -140,6 +146,7 @@ export default function ProductsPage() {
       stock: String(p.stock),
       minimumStock: String(p.minimumStock),
       unit: p.unit,
+      image: p.image || "",
     });
     setFormErrors({});
     setIsFormModalOpen(true);
@@ -169,6 +176,28 @@ export default function ProductsPage() {
 
     setIsSubmitting(true);
     try {
+      let finalImageUrl = formData.image;
+
+      if (selectedImage) {
+        setIsUploadingImage(true);
+        const uploadData = new FormData();
+        uploadData.append("file", selectedImage);
+        uploadData.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "");
+        const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "";
+
+        const uploadRes = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+          method: "POST",
+          body: uploadData,
+        });
+        const uploadedData = await uploadRes.json();
+        
+        if (!uploadRes.ok) {
+          throw new Error(uploadedData.error?.message || "Gagal upload gambar ke Cloudinary");
+        }
+        finalImageUrl = uploadedData.secure_url;
+        setIsUploadingImage(false);
+      }
+
       const url = editingProduct
         ? `/api/products/${editingProduct._id}`
         : "/api/products";
@@ -184,6 +213,7 @@ export default function ProductsPage() {
         stock: Number(formData.stock),
         minimumStock: Number(formData.minimumStock),
         unit: formData.unit,
+        image: finalImageUrl,
       };
 
       const res = await fetch(url, {
@@ -340,6 +370,7 @@ export default function ProductsPage() {
             <table className="w-full text-left text-xs text-slate-600">
               <thead className="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold uppercase tracking-wider text-[11px]">
                 <tr>
+                  <th className="py-3 px-4 w-16 text-center">Gambar</th>
                   <th className="py-3 px-4">Nama Produk & SKU</th>
                   <th className="py-3 px-4">Kategori</th>
                   {isOwner && <th className="py-3 px-4 text-right">Harga Modal</th>}
@@ -359,6 +390,19 @@ export default function ProductsPage() {
                       key={p._id}
                       className="hover:bg-slate-50/70 transition-colors"
                     >
+                      <td className="py-3 px-4 text-center">
+                        <div className="w-10 h-10 rounded-md border border-slate-200 overflow-hidden bg-slate-100 mx-auto shrink-0">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={p.image || "/placeholder.png"}
+                            alt={p.name}
+                            className="w-full h-full object-cover scale-[1.02]"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = "/placeholder.png";
+                            }}
+                          />
+                        </div>
+                      </td>
                       <td className="py-3 px-4">
                         <span className="font-semibold text-slate-900 block text-xs">
                           {p.name}
@@ -457,6 +501,36 @@ export default function ProductsPage() {
               value={formData.sku}
               onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
             />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="block text-xs font-semibold text-slate-700">
+              Gambar Produk (Opsional)
+            </label>
+            <div className="flex items-center gap-3">
+              {(selectedImage || formData.image) && (
+                <div className="w-12 h-12 rounded-lg border border-slate-200 overflow-hidden shrink-0 bg-slate-100">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img 
+                    src={selectedImage ? URL.createObjectURL(selectedImage) : formData.image} 
+                    alt="Preview" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+              <div className="flex-1">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      setSelectedImage(e.target.files[0]);
+                    }
+                  }}
+                  className="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer"
+                />
+              </div>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -571,7 +645,7 @@ export default function ProductsPage() {
             >
               Batal
             </Button>
-            <Button type="submit" isLoading={isSubmitting}>
+            <Button type="submit" isLoading={isSubmitting || isUploadingImage}>
               {editingProduct ? "Simpan Perubahan" : "Tambah Produk"}
             </Button>
           </div>

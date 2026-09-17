@@ -14,6 +14,7 @@ import {
   Banknote,
   QrCode,
   Package,
+  X,
 } from "lucide-react";
 import { IProduct, ICategory, PaymentMethod, ISale } from "@/types";
 import { formatRupiah } from "@/lib/utils";
@@ -297,17 +298,21 @@ export default function POSPage() {
 
           {/* Product Cards Grid */}
           {isLoading ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3">
-              {[...Array(8)].map((_, i) => (
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-5">
+              {[...Array(9)].map((_, i) => (
                 <div
                   key={i}
-                  className="h-36 rounded-xl border border-slate-200 bg-white p-3 animate-pulse flex flex-col justify-between"
+                  className="h-[220px] rounded-xl border border-slate-200 bg-white p-3 animate-pulse flex flex-col"
                 >
-                  <div className="space-y-2">
+                  <div className="w-full h-24 bg-slate-100 rounded-lg mb-3 shrink-0" />
+                  <div className="space-y-2 flex-1">
+                    <div className="h-3 bg-slate-100 rounded w-1/3" />
                     <div className="h-4 bg-slate-100 rounded w-3/4" />
-                    <div className="h-3 bg-slate-100 rounded w-1/2" />
                   </div>
-                  <div className="h-4 bg-slate-100 rounded w-2/3" />
+                  <div className="pt-2 mt-2 border-t border-slate-100 flex justify-between">
+                     <div className="h-4 bg-slate-100 rounded w-1/3" />
+                     <div className="h-4 bg-slate-100 rounded w-1/4" />
+                  </div>
                 </div>
               ))}
             </div>
@@ -322,7 +327,7 @@ export default function POSPage() {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-5">
               {filteredProducts.map((product) => {
                 const isOutOfStock = product.stock <= 0;
                 const qtyInCart = cart.get(product._id) || 0;
@@ -332,7 +337,7 @@ export default function POSPage() {
                     key={product._id}
                     onClick={() => addToCart(product)}
                     disabled={isOutOfStock}
-                    className={`relative text-left p-3.5 rounded-xl border bg-white transition-all flex flex-col justify-between h-36 ${
+                    className={`relative text-left p-3 rounded-xl border bg-white transition-all flex flex-col h-full ${
                       isOutOfStock
                         ? "opacity-50 cursor-not-allowed border-slate-200 bg-slate-50"
                         : qtyInCart > 0
@@ -341,28 +346,54 @@ export default function POSPage() {
                     }`}
                   >
                     {qtyInCart > 0 && (
-                      <span className="absolute -top-2 -right-2 bg-emerald-600 text-white text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-md">
-                        {qtyInCart}
-                      </span>
+                      <>
+                        <div 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            removeFromCart(product._id);
+                          }}
+                          className="absolute -top-2 -left-2 bg-rose-500 text-white w-5 h-5 rounded-full flex items-center justify-center shadow-md z-10 hover:bg-rose-600 transition-colors"
+                          title="Hapus dari keranjang"
+                        >
+                          <X className="w-3 h-3" />
+                        </div>
+                        <span className="absolute -top-2 -right-2 bg-emerald-600 text-white text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-md z-10">
+                          {qtyInCart}
+                        </span>
+                      </>
                     )}
 
-                    <div>
-                      <span className="text-[10px] font-mono text-slate-400 block uppercase">
-                        {product.sku}
-                      </span>
-                      <h3 className="text-xs font-semibold text-slate-900 line-clamp-2 mt-0.5 leading-snug">
-                        {product.name}
-                      </h3>
+                    <div className="w-full h-28 mb-3 rounded-lg overflow-hidden bg-slate-100 border border-slate-100 shrink-0">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img 
+                        src={product.image || "/placeholder.png"} 
+                        alt={product.name}
+                        className="w-full h-full object-cover scale-[1.02]"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = "/placeholder.png";
+                        }}
+                      />
                     </div>
 
-                    <div className="pt-2 border-t border-slate-100 mt-auto flex items-center justify-between">
-                      <span className="text-xs font-bold text-emerald-700">
-                        {formatRupiah(product.sellingPrice)}
-                      </span>
-                      <StockBadge
-                        stock={product.stock}
-                        minimumStock={product.minimumStock}
-                      />
+                    <div className="flex-1 flex flex-col justify-between w-full">
+                      <div>
+                        <span className="text-[10px] font-mono text-slate-400 block uppercase">
+                          {product.sku}
+                        </span>
+                        <h3 className="text-xs font-semibold text-slate-900 line-clamp-2 mt-0.5 leading-snug">
+                          {product.name}
+                        </h3>
+                      </div>
+
+                      <div className="pt-2 border-t border-slate-100 mt-2 flex items-center justify-between w-full">
+                        <span className="text-xs font-bold text-emerald-700">
+                          {formatRupiah(product.sellingPrice)}
+                        </span>
+                        <StockBadge
+                          stock={product.stock}
+                          minimumStock={product.minimumStock}
+                        />
+                      </div>
                     </div>
                   </button>
                 );

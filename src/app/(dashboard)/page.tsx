@@ -21,6 +21,7 @@ import {
   YAxis,
   Tooltip,
   CartesianGrid,
+  Cell,
 } from "recharts";
 import { formatRupiah } from "@/lib/utils";
 import { StockBadge } from "@/components/ui/Badge";
@@ -88,15 +89,7 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Link
-            href="/pos"
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700 transition-colors shadow-sm"
-          >
-            <ShoppingCart className="w-3.5 h-3.5" />
-            <span>Buka Kasir (POS)</span>
-          </Link>
-        </div>
+       
       </div>
 
       {/* 1. Kondisi Bisnis Hari Ini (Priority 1) */}
@@ -170,53 +163,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* 2. Attention Needed: Low Stock Products (Priority 2) */}
-      {lowStockProducts.length > 0 && (
-        <div className="bg-white rounded-xl border border-amber-300 shadow-[0_3px_14px_rgba(217,119,6,0.09),0_1px_3px_rgba(0,0,0,0.04)] p-5 sm:p-6 mt-6 sm:mt-8">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-amber-200/80">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 shadow-xs">
-                <AlertTriangle className="w-4 h-4" />
-              </div>
-              <div>
-                <h3 className="text-sm font-bold text-slate-900 tracking-tight">
-                  Perhatian: {lowStockProducts.length} Produk Menipis atau Habis
-                </h3>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Stok barang ini berada di bawah batas aman minimum. Segera buat Stock In dari supplier.
-                </p>
-              </div>
-            </div>
 
-            <Link
-              href="/inventory"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition-colors self-start sm:self-auto shrink-0 shadow-xs"
-            >
-              <span>Buka Inventori</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 sm:gap-4 pt-4">
-            {lowStockProducts.slice(0, 6).map((p) => (
-              <div
-                key={p._id}
-                className="p-4 rounded-xl border border-amber-200/70 bg-amber-50/30 hover:bg-white hover:border-amber-400 hover:shadow-md transition-all flex items-center justify-between text-xs"
-              >
-                <div className="truncate pr-3">
-                  <span className="font-semibold text-slate-900 block truncate text-xs">
-                    {p.name}
-                  </span>
-                  <span className="text-[11px] text-slate-500 mt-1 block">
-                    Sisa: <strong className="text-amber-700 font-bold">{p.stock}</strong> / min {p.minimumStock} {p.unit}
-                  </span>
-                </div>
-                <StockBadge stock={p.stock} minimumStock={p.minimumStock} />
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* 3. Sales Performance & Top Products (Priority 3 & 4) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
@@ -301,7 +248,18 @@ export default function DashboardPage() {
                       fontSize: "12px",
                     }}
                   />
-                  <Bar dataKey="revenue" fill="#059669" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="revenue" radius={[4, 4, 0, 0]}>
+                    {chartData.map((entry: any, index: number) => {
+                      let fill = "#10b981"; // Default Emerald
+                      const maxVal = Math.max(...chartData.map((d: any) => d.revenue));
+                      if (maxVal > 0) {
+                        if (entry.revenue <= maxVal * 0.3) fill = "#f43f5e"; // Rose for low
+                        else if (entry.revenue <= maxVal * 0.65) fill = "#f59e0b"; // Amber for medium
+                        else fill = "#059669"; // Emerald for high
+                      }
+                      return <Cell key={`cell-${index}`} fill={fill} />;
+                    })}
+                  </Bar>
                 </BarChart>
               </ResponsiveContainer>
             )}

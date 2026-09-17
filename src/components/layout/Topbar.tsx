@@ -2,8 +2,8 @@
 
 import React from "react";
 import { Menu, LogOut, Calendar } from "lucide-react";
-import { signOut, useSession } from "next-auth/react";
-import { formatDate } from "@/lib/utils";
+import { useSession } from "next-auth/react";
+import { formatDate, cn } from "@/lib/utils";
 
 interface TopbarProps {
   onMenuClick: () => void;
@@ -31,25 +31,26 @@ export function Topbar({ onMenuClick }: TopbarProps) {
       </div>
 
       <div className="flex items-center gap-3">
-        <div className="text-right">
-          <span className="text-xs font-semibold text-slate-800 block leading-tight">
-            {session?.user?.name || "Kasir"}
-          </span>
-          <span className="text-[10px] text-slate-400 capitalize">
-            {session?.user?.role === "owner" ? "Pemilik Toko" : "Kasir Aktif"}
+        <div className="p-1.5 rounded-lg bg-slate-50 border border-slate-100 flex items-center gap-3 sm:gap-4 max-w-[200px] sm:max-w-xs">
+          <div className="truncate text-right">
+            <p className="text-xs font-semibold text-slate-800 truncate">
+              {session?.user?.name ? session.user.name.split(' (')[0] : "Pengguna"}
+            </p>
+            <p className="text-[10px] text-slate-500 truncate">
+              {session?.user?.email || "user@example.com"}
+            </p>
+          </div>
+          <span
+            className={cn(
+              "px-2 py-1 rounded text-[10px] font-semibold uppercase tracking-wider shrink-0",
+              session?.user?.role === "owner"
+                ? "bg-purple-50 text-purple-700 border border-purple-200"
+                : "bg-emerald-50 text-emerald-700 border border-emerald-200"
+            )}
+          >
+            {session?.user?.role === "owner" ? "Owner" : "Kasir"}
           </span>
         </div>
-
-        <div className="h-4 w-px bg-slate-200 mx-0.5" />
-
-        <button
-          onClick={() => signOut({ callbackUrl: "/login" })}
-          className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-rose-600 hover:bg-rose-50 transition-colors"
-          title="Keluar dari akun"
-        >
-          <LogOut className="w-4 h-4" />
-          <span className="hidden sm:inline">Keluar</span>
-        </button>
       </div>
     </header>
   );

@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import {
   LayoutDashboard,
   ShoppingCart,
@@ -18,6 +18,7 @@ import {
   Settings,
   X,
   Store,
+  LogOut,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -149,10 +150,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         {/* Navigation list */}
         <nav className="flex-1 px-3 py-3 space-y-0.5 overflow-y-auto scrollbar-none">
           {filteredNav.map((item) => {
-            const isActive =
-              item.href === "/"
-                ? pathname === "/"
-                : pathname === item.href || pathname.startsWith(item.href + "/");
+            const isActive = pathname === item.href;
 
             return (
               <Link
@@ -185,28 +183,15 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           })}
         </nav>
 
-        {/* User Role Card */}
+        {/* Logout Button */}
         <div className="p-3 shrink-0 border-t border-slate-100">
-          <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-between">
-            <div className="truncate">
-              <p className="text-xs font-semibold text-slate-800 truncate">
-                {session?.user?.name || "Pengguna"}
-              </p>
-              <p className="text-[10px] text-slate-500 truncate">
-                {session?.user?.email || "user@example.com"}
-              </p>
-            </div>
-            <span
-              className={cn(
-                "px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider",
-                userRole === "owner"
-                  ? "bg-purple-50 text-purple-700 border border-purple-200"
-                  : "bg-emerald-50 text-emerald-700 border border-emerald-200"
-              )}
-            >
-              {userRole === "owner" ? "Owner" : "Kasir"}
-            </span>
-          </div>
+          <button
+            onClick={() => signOut({ callbackUrl: "/login" })}
+            className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-lg text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors"
+          >
+            <LogOut className="w-4 h-4 shrink-0" />
+            <span>Keluar Akun</span>
+          </button>
         </div>
       </aside>
     </>
