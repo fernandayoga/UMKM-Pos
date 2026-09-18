@@ -60,12 +60,15 @@ export async function GET(req: NextRequest) {
     >();
 
     // Daily breakdown for chart
-    const dailyMap = new Map<string, { date: string; revenue: number; profit: number; transactions: number }>();
+    const dailyMap = new Map<
+      string,
+      { date: string; revenue: number; profit: number; grossProfit: number; transactions: number }
+    >();
 
     for (const sale of sales) {
       const dateKey = new Date(sale.createdAt).toISOString().split("T")[0];
       if (!dailyMap.has(dateKey)) {
-        dailyMap.set(dateKey, { date: dateKey, revenue: 0, profit: 0, transactions: 0 });
+        dailyMap.set(dateKey, { date: dateKey, revenue: 0, profit: 0, grossProfit: 0, transactions: 0 });
       }
       const dayData = dailyMap.get(dateKey)!;
       dayData.transactions += 1;
@@ -81,6 +84,7 @@ export async function GET(req: NextRequest) {
 
         dayData.revenue += itemRevenue;
         dayData.profit += itemProfit;
+        dayData.grossProfit += itemProfit;
 
         const pid = item.productId.toString();
         if (!productStatsMap.has(pid)) {

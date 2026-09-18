@@ -62,6 +62,17 @@ const config: Config = {
       spacing: {
         4.5: "1.125rem",
       },
+      fontFamily: {
+        sans: [
+          "Inter",
+          '"Plus Jakarta Sans"',
+          "-apple-system",
+          "BlinkMacSystemFont",
+          '"Segoe UI"',
+          "Roboto",
+          "sans-serif",
+        ],
+      },
     },
   },
   plugins: [],

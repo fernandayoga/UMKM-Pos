@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   BarChart3,
   TrendingUp,
@@ -45,6 +45,14 @@ export default function ReportsPage() {
   const [bestSellingProducts, setBestSellingProducts] = useState<any[]>([]);
   const [highestRevenueProducts, setHighestRevenueProducts] = useState<any[]>([]);
   const [highestProfitProducts, setHighestProfitProducts] = useState<any[]>([]);
+
+  // Ensure both grossProfit and profit are available for the chart
+  const normalizedChartData = useMemo(() => {
+    return chartData.map((item) => ({
+      ...item,
+      grossProfit: item.grossProfit ?? item.profit ?? 0,
+    }));
+  }, [chartData]);
 
   const loadReport = async () => {
     setIsLoading(true);
@@ -235,7 +243,7 @@ export default function ReportsPage() {
         ) : (
           <div className="h-72 w-full pt-2">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
+              <BarChart data={normalizedChartData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                 <XAxis
                   dataKey="date"
@@ -252,7 +260,7 @@ export default function ReportsPage() {
                 <Tooltip
                   formatter={(value: any, name: any) => [
                     formatRupiah(Number(value)),
-                    name === "revenue" ? "Omzet" : "Laba Kotor",
+                    name === "revenue" ? "Omzet Penjualan" : "Laba Kotor",
                   ]}
                   labelFormatter={(label) => `Tanggal: ${label}`}
                   contentStyle={{
@@ -260,13 +268,14 @@ export default function ReportsPage() {
                     borderColor: "#e2e8f0",
                     borderRadius: "0.5rem",
                     fontSize: "12px",
+                    boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
                   }}
                 />
                 <Legend
                   formatter={(value) => (value === "revenue" ? "Omzet Penjualan" : "Laba Kotor")}
-                  wrapperStyle={{ fontSize: "12px", paddingTop: "10px" }}
+                  wrapperStyle={{ fontSize: "12px", paddingTop: "12px" }}
                 />
-                <Bar dataKey="revenue" fill="#047857" name="revenue" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="revenue" fill="#2563eb" name="revenue" radius={[3, 3, 0, 0]} />
                 <Bar dataKey="grossProfit" fill="#10b981" name="grossProfit" radius={[3, 3, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>

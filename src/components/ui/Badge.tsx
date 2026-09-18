@@ -46,24 +46,32 @@ export function Badge({
 /**
  * Helper badge specifically for Stock Status
  */
-export function StockBadge({ stock, minimumStock }: { stock: number; minimumStock: number }) {
+export function StockBadge({
+  stock,
+  minimumStock,
+  showCount = false,
+}: {
+  stock: number;
+  minimumStock: number;
+  showCount?: boolean;
+}) {
   if (stock <= 0) {
     return (
       <Badge variant="danger" withDot>
-        Habis (0)
+        Habis{showCount ? " (0)" : ""}
       </Badge>
     );
   }
   if (stock <= minimumStock) {
     return (
       <Badge variant="warning" withDot>
-        Menipis ({stock})
+        Menipis{showCount ? ` (${stock})` : ""}
       </Badge>
     );
   }
   return (
     <Badge variant="success" withDot>
-      Aman ({stock})
+      Aman{showCount ? ` (${stock})` : ""}
     </Badge>
   );
 }

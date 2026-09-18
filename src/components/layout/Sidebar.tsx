@@ -125,17 +125,17 @@ export function Sidebar({ isOpen, onClose, onOpenAI }: SidebarProps) {
         )}
       >
         {/* Brand Header */}
-        <div className="h-14 shrink-0 flex items-center justify-between px-5 border-b border-slate-100">
+        <div className="h-14 shrink-0 flex items-center justify-between px-4 sm:px-5 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center bg-white border border-slate-200 shadow-2xs shrink-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/logo.png" alt="Logo UMKM POS" className="w-full h-full object-contain p-0.5" />
             </div>
             <div>
-              <span className="font-bold text-sm tracking-tight text-slate-900 block leading-none">
+              <span className="font-extrabold text-[14px] tracking-tight text-slate-900 block leading-none">
                 UMKM POS
               </span>
-              <span className="text-[10px] text-slate-400 font-medium leading-none">
+              <span className="text-[10px] text-slate-400 font-semibold tracking-wider uppercase leading-none mt-1 block">
                 Retail & Inventory
               </span>
             </div>
@@ -150,7 +150,7 @@ export function Sidebar({ isOpen, onClose, onOpenAI }: SidebarProps) {
         </div>
 
         {/* Navigation list */}
-        <nav className="flex-1 px-3 py-3 space-y-0.5 overflow-y-auto scrollbar-none">
+        <nav className="flex-1 px-3 py-3 space-y-1 overflow-y-auto scrollbar-none">
           {filteredNav.map((item) => {
             const isActive = pathname === item.href;
 
@@ -160,22 +160,24 @@ export function Sidebar({ isOpen, onClose, onOpenAI }: SidebarProps) {
                 href={item.href}
                 onClick={onClose}
                 className={cn(
-                  "flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-colors",
+                  "group flex items-center justify-between px-3 py-2 rounded-lg text-[13px] font-semibold tracking-tight transition-all select-none",
                   isActive
-                    ? "bg-emerald-50 text-emerald-700 font-semibold"
-                    : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                    ? "bg-emerald-50 text-emerald-800 font-bold border border-emerald-200/80 shadow-2xs"
+                    : "text-slate-700 hover:bg-slate-100/70 hover:text-slate-950"
                 )}
               >
                 <div className="flex items-center gap-2.5">
                   <item.icon
                     className={cn(
-                      "w-4 h-4 shrink-0",
-                      isActive ? "text-emerald-600" : "text-slate-400"
+                      "w-[18px] h-[18px] shrink-0 transition-colors",
+                      isActive
+                        ? "text-emerald-700"
+                        : "text-slate-500 group-hover:text-slate-900"
                     )}
+                    strokeWidth={isActive ? 2.2 : 2}
                   />
                   <span>{item.name}</span>
                 </div>
-               
               </Link>
             );
           })}
@@ -186,13 +188,13 @@ export function Sidebar({ isOpen, onClose, onOpenAI }: SidebarProps) {
                 onClose();
                 onOpenAI();
               }}
-              className="flex items-center justify-between w-full px-3 py-2 rounded-lg text-xs font-medium text-emerald-800 bg-emerald-50/70 hover:bg-emerald-100/80 border border-emerald-200 transition-colors mt-2"
+              className="group flex items-center justify-between w-full px-3 py-2 rounded-lg text-[13px] font-bold text-emerald-900 bg-emerald-50/90 hover:bg-emerald-100/90 border border-emerald-300/80 shadow-2xs transition-all mt-2.5"
             >
               <div className="flex items-center gap-2.5">
-                <Sparkles className="w-4 h-4 shrink-0 text-emerald-600" />
-                <span className="font-semibold">AI Assistant</span>
+                <Sparkles className="w-[18px] h-[18px] shrink-0 text-emerald-700" strokeWidth={2.2} />
+                <span>AI Assistant</span>
               </div>
-              <span className="px-1.5 py-0.5 text-[9px] font-bold bg-emerald-600 text-white rounded">
+              <span className="px-1.5 py-0.5 text-[9px] font-extrabold bg-emerald-700 text-white rounded shadow-2xs">
                 AI
               </span>
             </button>
@@ -203,9 +205,9 @@ export function Sidebar({ isOpen, onClose, onOpenAI }: SidebarProps) {
         <div className="p-3 shrink-0 border-t border-slate-100">
           <button
             onClick={() => signOut({ callbackUrl: "/login" })}
-            className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-lg text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors"
+            className="flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-[13px] font-semibold text-rose-600 hover:text-rose-700 hover:bg-rose-50/80 transition-colors"
           >
-            <LogOut className="w-4 h-4 shrink-0" />
+            <LogOut className="w-[18px] h-[18px] shrink-0" strokeWidth={2} />
             <span>Keluar Akun</span>
           </button>
         </div>
