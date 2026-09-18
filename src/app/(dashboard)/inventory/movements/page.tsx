@@ -94,7 +94,7 @@ export default function InventoryMovementsPage() {
       </div>
 
       {/* Movements Table */}
-      <div className="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-[0_3px_12px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)]">
+      <div className="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-sm">
         {isLoading ? (
           <div className="p-8 text-center text-xs text-slate-400">
             Memuat riwayat audit mutasi...
@@ -106,17 +106,17 @@ export default function InventoryMovementsPage() {
             description="Perubahan stok dari transaksi penjualan dan barang masuk akan otomatis tercatat di sini."
           />
         ) : (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto max-h-[calc(100vh-230px)] overflow-y-auto">
             <table className="w-full text-left text-xs text-slate-600">
-              <thead className="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold uppercase tracking-wider text-[11px]">
+              <thead className="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold uppercase tracking-wider text-[11px] sticky top-0 z-10 shadow-2xs">
                 <tr>
-                  <th className="py-3 px-4">Waktu</th>
-                  <th className="py-3 px-4">Produk</th>
-                  <th className="py-3 px-4 text-center">Jenis Mutasi</th>
-                  <th className="py-3 px-4 text-right">Perubahan Qty</th>
-                  <th className="py-3 px-4 text-center">Stok (Sebelum → Sesudah)</th>
-                  <th className="py-3 px-4">Keterangan / Ref</th>
-                  <th className="py-3 px-4">Operator</th>
+                  <th className="py-2.5 px-3.5">Waktu</th>
+                  <th className="py-2.5 px-3.5">Produk</th>
+                  <th className="py-2.5 px-3.5 text-center">Jenis Mutasi</th>
+                  <th className="py-2.5 px-3.5 text-right">Perubahan Qty</th>
+                  <th className="py-2.5 px-3.5 text-center">Stok (Sebelum → Sesudah)</th>
+                  <th className="py-2.5 px-3.5">Keterangan / Ref</th>
+                  <th className="py-2.5 px-3.5">Operator</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -125,12 +125,12 @@ export default function InventoryMovementsPage() {
                   const isNegative = m.quantity < 0;
 
                   return (
-                    <tr key={m._id} className="hover:bg-slate-50/70 transition-colors">
-                      <td className="py-3 px-4 text-slate-500 whitespace-nowrap">
+                    <tr key={m._id} className="hover:bg-slate-50/80 transition-colors">
+                      <td className="py-2.5 px-3.5 text-slate-500 whitespace-nowrap">
                         {formatDate(m.createdAt)}
                       </td>
 
-                      <td className="py-3 px-4">
+                      <td className="py-2.5 px-3.5">
                         <span className="font-semibold text-slate-900 block text-xs">
                           {m.productName}
                         </span>
@@ -139,7 +139,7 @@ export default function InventoryMovementsPage() {
                         </span>
                       </td>
 
-                      <td className="py-3 px-4 text-center">
+                      <td className="py-2.5 px-3.5 text-center">
                         <span
                           className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold ${
                             m.type === "SALE"
@@ -153,7 +153,7 @@ export default function InventoryMovementsPage() {
                         </span>
                       </td>
 
-                      <td className="py-3 px-4 text-right font-bold">
+                      <td className="py-2.5 px-3.5 text-right font-bold font-mono tabular-nums">
                         <span
                           className={
                             isPositive
@@ -163,21 +163,22 @@ export default function InventoryMovementsPage() {
                               : "text-slate-600"
                           }
                         >
-                          {isPositive ? `+${m.quantity}` : m.quantity} {m.unit}
+                          {isPositive ? `+${m.quantity}` : m.quantity}{" "}
+                          <span className="font-sans font-normal text-slate-400 text-[10px]">{m.unit}</span>
                         </span>
                       </td>
 
-                      <td className="py-3 px-4 text-center text-slate-700 font-mono text-[11px]">
+                      <td className="py-2.5 px-3.5 text-center text-slate-700 font-mono tabular-nums text-[11px]">
                         <span className="text-slate-400">{m.previousStock}</span>
-                        <span className="mx-1 text-slate-300">→</span>
+                        <span className="mx-1.5 text-slate-300 font-sans">→</span>
                         <span className="font-bold text-slate-900">{m.newStock}</span>
                       </td>
 
-                      <td className="py-3 px-4 text-slate-600 max-w-xs truncate">
+                      <td className="py-2.5 px-3.5 text-slate-600 max-w-xs truncate">
                         {m.note || m.referenceId || "-"}
                       </td>
 
-                      <td className="py-3 px-4 text-slate-600 whitespace-nowrap">
+                      <td className="py-2.5 px-3.5 text-slate-600 whitespace-nowrap">
                         {m.createdByName || "Sistem"}
                       </td>
                     </tr>

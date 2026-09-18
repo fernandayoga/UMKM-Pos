@@ -166,7 +166,7 @@ export default function SuppliersPage() {
         )}
       </div>
 
-      <div className="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-[0_3px_12px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)]">
+      <div className="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-sm">
         {isLoading ? (
           <div className="p-8 text-center text-xs text-slate-400">
             Memuat daftar supplier...
@@ -180,29 +180,29 @@ export default function SuppliersPage() {
             onAction={isOwner ? handleOpenAdd : undefined}
           />
         ) : (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto max-h-[calc(100vh-230px)] overflow-y-auto">
             <table className="w-full text-left text-xs text-slate-600">
-              <thead className="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold uppercase tracking-wider text-[11px]">
+              <thead className="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold uppercase tracking-wider text-[11px] sticky top-0 z-10 shadow-2xs">
                 <tr>
-                  <th className="py-3 px-4">Nama Supplier</th>
-                  <th className="py-3 px-4">Kontak (Telepon & Email)</th>
-                  <th className="py-3 px-4">Alamat Gudang / Kantor</th>
-                  <th className="py-3 px-4">Catatan Pasokan</th>
-                  <th className="py-3 px-4 text-right">Aksi</th>
+                  <th className="py-2.5 px-3.5">Nama Supplier</th>
+                  <th className="py-2.5 px-3.5">Kontak (Telepon & Email)</th>
+                  <th className="py-2.5 px-3.5">Alamat Gudang / Kantor</th>
+                  <th className="py-2.5 px-3.5">Catatan Pasokan</th>
+                  <th className="py-2.5 px-3.5 text-right">Aksi</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {suppliers.map((s) => (
-                  <tr key={s._id} className="hover:bg-slate-50/70 transition-colors">
-                    <td className="py-3 px-4 font-semibold text-slate-900">
+                  <tr key={s._id} className="hover:bg-slate-50/80 transition-colors">
+                    <td className="py-2.5 px-3.5 font-semibold text-slate-900">
                       {s.name}
                     </td>
 
-                    <td className="py-3 px-4 space-y-0.5">
+                    <td className="py-2.5 px-3.5 space-y-0.5">
                       {s.phone && (
                         <div className="flex items-center gap-1.5 text-slate-700">
                           <Phone className="w-3 h-3 text-slate-400" />
-                          <span>{s.phone}</span>
+                          <span className="font-mono text-[11px]">{s.phone}</span>
                         </div>
                       )}
                       {s.email && (
@@ -214,19 +214,19 @@ export default function SuppliersPage() {
                       {!s.phone && !s.email && <span className="text-slate-400">-</span>}
                     </td>
 
-                    <td className="py-3 px-4 text-slate-600 max-w-xs truncate">
+                    <td className="py-2.5 px-3.5 text-slate-600 max-w-xs truncate">
                       {s.address || "-"}
                     </td>
 
-                    <td className="py-3 px-4 text-slate-500 max-w-xs truncate">
+                    <td className="py-2.5 px-3.5 text-slate-500 max-w-xs truncate">
                       {s.notes || "-"}
                     </td>
 
-                    <td className="py-3 px-4 text-right">
+                    <td className="py-2.5 px-3.5 text-right">
                       <div className="flex items-center justify-end gap-1.5">
                         <button
                           onClick={() => handleOpenHistory(s)}
-                          className="p-1.5 rounded-lg text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors"
+                          className="p-1.5 rounded-md text-slate-500 hover:text-emerald-700 hover:bg-emerald-50 transition-colors"
                           title="Lihat Riwayat Pasokan"
                         >
                           <History className="w-3.5 h-3.5" />
@@ -235,14 +235,14 @@ export default function SuppliersPage() {
                           <>
                             <button
                               onClick={() => handleOpenEdit(s)}
-                              className="p-1.5 rounded-lg text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors"
+                              className="p-1.5 rounded-md text-slate-500 hover:text-emerald-700 hover:bg-emerald-50 transition-colors"
                               title="Edit Supplier"
                             >
                               <Edit2 className="w-3.5 h-3.5" />
                             </button>
                             <button
                               onClick={() => setSupplierToDelete(s)}
-                              className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                              className="p-1.5 rounded-md text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition-colors"
                               title="Hapus Supplier"
                             >
                               <Trash2 className="w-3.5 h-3.5" />

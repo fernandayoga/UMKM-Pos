@@ -6,6 +6,14 @@ import { ToastProvider } from "@/components/ui/Toast";
 export const metadata: Metadata = {
   title: "UMKM POS & Inventory System",
   description: "Aplikasi Kasir, Manajemen Stok & AI Business Assistant untuk UMKM",
+  icons: {
+    icon: [
+      { url: "/logo.png", type: "image/png" },
+      { url: "/favicon.ico" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({

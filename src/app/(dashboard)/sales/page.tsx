@@ -69,7 +69,7 @@ export default function SalesHistoryPage() {
       </div>
 
       {/* Filter Bar */}
-      <div className="bg-white p-4 rounded-xl border border-slate-200/90 flex flex-col sm:flex-row gap-3 items-center justify-between shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_2px_rgba(15,23,42,0.04)]">
+      <div className="bg-white p-3 rounded-lg border border-slate-200 flex flex-col sm:flex-row gap-2.5 items-center justify-between shadow-sm">
         <form onSubmit={handleSearchSubmit} className="relative w-full sm:w-80">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
@@ -109,7 +109,7 @@ export default function SalesHistoryPage() {
       </div>
 
       {/* Sales Table */}
-      <div className="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-[0_3px_12px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)]">
+      <div className="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-sm">
         {isLoading ? (
           <div className="p-8 text-center text-xs text-slate-400">
             Memuat riwayat transaksi...
@@ -121,39 +121,39 @@ export default function SalesHistoryPage() {
             description="Transaksi yang dilakukan melalui halaman Kasir (POS) akan otomatis muncul di sini."
           />
         ) : (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto max-h-[calc(100vh-230px)] overflow-y-auto">
             <table className="w-full text-left text-xs text-slate-600">
-              <thead className="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold uppercase tracking-wider text-[11px]">
+              <thead className="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold uppercase tracking-wider text-[11px] sticky top-0 z-10 shadow-2xs">
                 <tr>
-                  <th className="py-3 px-4">No. Invoice</th>
-                  <th className="py-3 px-4">Waktu Transaksi</th>
-                  <th className="py-3 px-4">Kasir</th>
-                  <th className="py-3 px-4">Item Belanja</th>
-                  <th className="py-3 px-4 text-center">Metode Bayar</th>
-                  <th className="py-3 px-4 text-right">Total Transaksi</th>
-                  <th className="py-3 px-4 text-right">Aksi</th>
+                  <th className="py-2.5 px-3.5">No. Invoice</th>
+                  <th className="py-2.5 px-3.5">Waktu Transaksi</th>
+                  <th className="py-2.5 px-3.5">Kasir</th>
+                  <th className="py-2.5 px-3.5">Item Belanja</th>
+                  <th className="py-2.5 px-3.5 text-center">Metode Bayar</th>
+                  <th className="py-2.5 px-3.5 text-right">Total Transaksi</th>
+                  <th className="py-2.5 px-3.5 text-right">Aksi</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {sales.map((s) => (
-                  <tr key={s._id} className="hover:bg-slate-50/70 transition-colors">
-                    <td className="py-3 px-4 font-mono font-bold text-slate-900">
+                  <tr key={s._id} className="hover:bg-slate-50/80 transition-colors">
+                    <td className="py-2.5 px-3.5 font-mono font-bold text-slate-900">
                       {s.invoiceNumber}
                     </td>
 
-                    <td className="py-3 px-4 text-slate-500 whitespace-nowrap">
+                    <td className="py-2.5 px-3.5 text-slate-500 whitespace-nowrap">
                       {formatDate(s.createdAt)}
                     </td>
 
-                    <td className="py-3 px-4 text-slate-700 font-medium">
+                    <td className="py-2.5 px-3.5 text-slate-700 font-medium">
                       {s.cashierName}
                     </td>
 
-                    <td className="py-3 px-4 text-slate-600 max-w-xs truncate">
+                    <td className="py-2.5 px-3.5 text-slate-600 max-w-xs truncate">
                       {s.items.map((it) => `${it.productName} (${it.quantity})`).join(", ")}
                     </td>
 
-                    <td className="py-3 px-4 text-center">
+                    <td className="py-2.5 px-3.5 text-center">
                       <span
                         className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold uppercase ${
                           s.paymentMethod === "cash"
@@ -167,14 +167,14 @@ export default function SalesHistoryPage() {
                       </span>
                     </td>
 
-                    <td className="py-3 px-4 text-right font-extrabold text-slate-900 text-sm">
+                    <td className="py-2.5 px-3.5 text-right font-bold font-mono tabular-nums text-slate-900 text-xs">
                       {formatRupiah(s.total)}
                     </td>
 
-                    <td className="py-3 px-4 text-right">
+                    <td className="py-2.5 px-3.5 text-right">
                       <button
                         onClick={() => setSelectedSale(s)}
-                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 transition-colors"
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition-colors"
                       >
                         <Eye className="w-3.5 h-3.5" />
                         <span>Detail Nota</span>

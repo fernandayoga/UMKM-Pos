@@ -98,25 +98,25 @@ export default function DashboardPage() {
           Overview Kondisi Bisnis
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
           {/* Total Sales */}
-          <div className="bg-white p-5 sm:p-6 rounded-xl border border-slate-200/90 shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_2px_rgba(15,23,42,0.04)] hover:shadow-[0_4px_16px_rgba(15,23,42,0.1)] hover:-translate-y-0.5 transition-all flex flex-col justify-between">
+          <div className="bg-white p-4 sm:p-5 rounded-lg border border-slate-200 shadow-sm hover:shadow transition-all flex flex-col justify-between">
             <span className="text-xs text-slate-500 font-semibold tracking-wide">Penjualan (Omzet)</span>
             <div className="my-2">
-              <p className="text-2xl font-black text-slate-900 tracking-tight">
+              <p className="text-2xl font-extrabold text-slate-900 tracking-tight font-mono tabular-nums">
                 {formatRupiah(summary.totalRevenue)}
               </p>
             </div>
-            <span className="text-[11px] text-slate-400 font-medium">
+            <span className="text-[11px] text-slate-400 font-medium font-mono tabular-nums">
               {summary.totalTransactions} transaksi berhasil
             </span>
           </div>
 
           {/* Transactions */}
-          <div className="bg-white p-5 sm:p-6 rounded-xl border border-slate-200/90 shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_2px_rgba(15,23,42,0.04)] hover:shadow-[0_4px_16px_rgba(15,23,42,0.1)] hover:-translate-y-0.5 transition-all flex flex-col justify-between">
+          <div className="bg-white p-4 sm:p-5 rounded-lg border border-slate-200 shadow-sm hover:shadow transition-all flex flex-col justify-between">
             <span className="text-xs text-slate-500 font-semibold tracking-wide">Jumlah Transaksi</span>
             <div className="my-2">
-              <p className="text-2xl font-black text-slate-900 tracking-tight">
+              <p className="text-2xl font-extrabold text-slate-900 tracking-tight font-mono tabular-nums">
                 {summary.totalTransactions}
               </p>
             </div>
@@ -126,10 +126,10 @@ export default function DashboardPage() {
           </div>
 
           {/* Items Sold */}
-          <div className="bg-white p-5 sm:p-6 rounded-xl border border-slate-200/90 shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_2px_rgba(15,23,42,0.04)] hover:shadow-[0_4px_16px_rgba(15,23,42,0.1)] hover:-translate-y-0.5 transition-all flex flex-col justify-between">
+          <div className="bg-white p-4 sm:p-5 rounded-lg border border-slate-200 shadow-sm hover:shadow transition-all flex flex-col justify-between">
             <span className="text-xs text-slate-500 font-semibold tracking-wide">Produk Terjual</span>
             <div className="my-2">
-              <p className="text-2xl font-black text-emerald-700 tracking-tight">
+              <p className="text-2xl font-extrabold text-emerald-800 tracking-tight font-mono tabular-nums">
                 {summary.totalItemsSold} pcs
               </p>
             </div>
@@ -139,14 +139,14 @@ export default function DashboardPage() {
           </div>
 
           {/* Gross Profit (Owner only or Cashier info) */}
-          <div className="bg-white p-5 sm:p-6 rounded-xl border border-slate-200/90 shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_2px_rgba(15,23,42,0.04)] hover:shadow-[0_4px_16px_rgba(15,23,42,0.1)] hover:-translate-y-0.5 transition-all flex flex-col justify-between">
+          <div className="bg-white p-4 sm:p-5 rounded-lg border border-slate-200 shadow-sm hover:shadow transition-all flex flex-col justify-between">
             <span className="text-xs text-slate-500 font-semibold tracking-wide">
               {isOwner ? "Laba Kotor (Gross Profit)" : "Produk Stok Rendah"}
             </span>
             <div className="my-2">
               <p
-                className={`text-2xl font-black tracking-tight ${
-                  isOwner ? "text-emerald-700" : "text-amber-600"
+                className={`text-2xl font-extrabold tracking-tight font-mono tabular-nums ${
+                  isOwner ? "text-emerald-800" : "text-amber-600"
                 }`}
               >
                 {isOwner
@@ -154,7 +154,7 @@ export default function DashboardPage() {
                   : `${summary.lowStockCount} Produk`}
               </p>
             </div>
-            <span className="text-[11px] text-slate-400 font-medium">
+            <span className="text-[11px] text-slate-400 font-medium font-mono tabular-nums">
               {isOwner
                 ? `Margin: ${summary.profitMarginPercent}%`
                 : "Memerlukan restock"}
@@ -163,12 +163,10 @@ export default function DashboardPage() {
         </div>
       </div>
 
-
-
       {/* 3. Sales Performance & Top Products (Priority 3 & 4) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
         {/* Sales Chart (8 cols) */}
-        <div className="lg:col-span-8 bg-white p-5 rounded-xl border border-slate-200/90 shadow-[0_3px_12px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)] space-y-3">
+        <div className="lg:col-span-8 bg-white p-4 sm:p-5 rounded-lg border border-slate-200 shadow-sm space-y-3">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <h3 className="text-sm font-bold text-slate-900">
@@ -184,7 +182,7 @@ export default function DashboardPage() {
                 onClick={() => setPeriod("today")}
                 className={`px-2.5 py-1 rounded-md font-medium transition-colors ${
                   period === "today"
-                    ? "bg-white text-slate-900 shadow-sm font-bold"
+                    ? "bg-white text-slate-900 shadow-xs font-bold"
                     : "text-slate-600 hover:text-slate-900"
                 }`}
               >
@@ -194,7 +192,7 @@ export default function DashboardPage() {
                 onClick={() => setPeriod("this_week")}
                 className={`px-2.5 py-1 rounded-md font-medium transition-colors ${
                   period === "this_week"
-                    ? "bg-white text-slate-900 shadow-sm font-bold"
+                    ? "bg-white text-slate-900 shadow-xs font-bold"
                     : "text-slate-600 hover:text-slate-900"
                 }`}
               >
@@ -204,7 +202,7 @@ export default function DashboardPage() {
                 onClick={() => setPeriod("this_month")}
                 className={`px-2.5 py-1 rounded-md font-medium transition-colors ${
                   period === "this_month"
-                    ? "bg-white text-slate-900 shadow-sm font-bold"
+                    ? "bg-white text-slate-900 shadow-xs font-bold"
                     : "text-slate-600 hover:text-slate-900"
                 }`}
               >
@@ -248,14 +246,14 @@ export default function DashboardPage() {
                       fontSize: "12px",
                     }}
                   />
-                  <Bar dataKey="revenue" radius={[4, 4, 0, 0]}>
+                  <Bar dataKey="revenue" radius={[3, 3, 0, 0]}>
                     {chartData.map((entry: any, index: number) => {
                       let fill = "#10b981"; // Default Emerald
                       const maxVal = Math.max(...chartData.map((d: any) => d.revenue));
                       if (maxVal > 0) {
                         if (entry.revenue <= maxVal * 0.3) fill = "#f43f5e"; // Rose for low
                         else if (entry.revenue <= maxVal * 0.65) fill = "#f59e0b"; // Amber for medium
-                        else fill = "#059669"; // Emerald for high
+                        else fill = "#047857"; // Deep emerald for high
                       }
                       return <Cell key={`cell-${index}`} fill={fill} />;
                     })}
@@ -267,14 +265,14 @@ export default function DashboardPage() {
         </div>
 
         {/* Top Selling Products (4 cols) */}
-        <div className="lg:col-span-4 bg-white p-5 rounded-xl border border-slate-200/90 shadow-[0_3px_12px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)]">
+        <div className="lg:col-span-4 bg-white p-4 sm:p-5 rounded-lg border border-slate-200 shadow-sm">
           <div className="flex items-center justify-between pb-3 border-b border-slate-100">
             <h3 className="text-sm font-bold text-slate-900">
               5 Produk Terlaris
             </h3>
             <Link
               href="/reports"
-              className="text-[11px] font-semibold text-emerald-600 hover:underline"
+              className="text-[11px] font-semibold text-emerald-700 hover:underline"
             >
               Semua
             </Link>
@@ -292,9 +290,9 @@ export default function DashboardPage() {
                     <span className="font-semibold text-slate-800 block truncate">
                       {idx + 1}. {p.name}
                     </span>
-                    <span className="text-[10px] text-slate-400">{p.sku}</span>
+                    <span className="text-[10px] text-slate-400 font-mono">{p.sku}</span>
                   </div>
-                  <span className="font-bold text-emerald-700 shrink-0">
+                  <span className="font-bold text-emerald-800 font-mono tabular-nums shrink-0">
                     {p.totalSold} pcs
                   </span>
                 </div>

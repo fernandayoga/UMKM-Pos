@@ -157,26 +157,26 @@ export default function ReportsPage() {
       </div>
 
       {/* KPI Financial Overview Strip (neutral-first, anti-slop) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
         {/* Total Revenue */}
-        <div className="bg-white p-5 rounded-xl border border-slate-200/90 shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_2px_rgba(15,23,42,0.04)] hover:shadow-[0_4px_16px_rgba(15,23,42,0.1)] hover:-translate-y-0.5 transition-all flex flex-col justify-between">
+        <div className="bg-white p-4 sm:p-5 rounded-lg border border-slate-200 shadow-sm hover:shadow transition-all flex flex-col justify-between">
           <span className="text-xs text-slate-500 font-semibold tracking-wide">
             Total Pendapatan (Omzet)
           </span>
-          <p className="text-2xl font-black text-slate-900 my-1.5 tracking-tight">
+          <p className="text-2xl font-extrabold text-slate-900 my-1.5 tracking-tight font-mono tabular-nums">
             {formatRupiah(summary.totalRevenue)}
           </p>
-          <span className="text-[11px] text-slate-400 font-medium">
+          <span className="text-[11px] text-slate-400 font-medium font-mono tabular-nums">
             {summary.totalTransactions} transaksi berhasil
           </span>
         </div>
 
         {/* Total COGS */}
-        <div className="bg-white p-5 rounded-xl border border-slate-200/90 shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_2px_rgba(15,23,42,0.04)] hover:shadow-[0_4px_16px_rgba(15,23,42,0.1)] hover:-translate-y-0.5 transition-all flex flex-col justify-between">
+        <div className="bg-white p-4 sm:p-5 rounded-lg border border-slate-200 shadow-sm hover:shadow transition-all flex flex-col justify-between">
           <span className="text-xs text-slate-500 font-semibold tracking-wide">
             Harga Pokok Penjualan (HPP / COGS)
           </span>
-          <p className="text-2xl font-black text-slate-600 my-1.5 tracking-tight">
+          <p className="text-2xl font-extrabold text-slate-600 my-1.5 tracking-tight font-mono tabular-nums">
             {formatRupiah(summary.totalCogs)}
           </p>
           <span className="text-[11px] text-slate-400 font-medium">
@@ -185,24 +185,24 @@ export default function ReportsPage() {
         </div>
 
         {/* Gross Profit */}
-        <div className="bg-white p-5 rounded-xl border border-slate-200/90 shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_2px_rgba(15,23,42,0.04)] hover:shadow-[0_4px_16px_rgba(15,23,42,0.1)] hover:-translate-y-0.5 transition-all flex flex-col justify-between">
+        <div className="bg-white p-4 sm:p-5 rounded-lg border border-slate-200 shadow-sm hover:shadow transition-all flex flex-col justify-between">
           <span className="text-xs text-slate-500 font-semibold tracking-wide">
             Laba Kotor (Gross Profit)
           </span>
-          <p className="text-2xl font-black text-emerald-700 my-1.5 tracking-tight">
+          <p className="text-2xl font-extrabold text-emerald-800 my-1.5 tracking-tight font-mono tabular-nums">
             {formatRupiah(summary.grossProfit)}
           </p>
-          <span className="text-[11px] text-emerald-600 font-semibold">
+          <span className="text-[11px] text-emerald-700 font-semibold font-mono tabular-nums">
             Margin: {summary.profitMarginPercent}%
           </span>
         </div>
 
         {/* Items Sold */}
-        <div className="bg-white p-5 rounded-xl border border-slate-200/90 shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_2px_rgba(15,23,42,0.04)] hover:shadow-[0_4px_16px_rgba(15,23,42,0.1)] hover:-translate-y-0.5 transition-all flex flex-col justify-between">
+        <div className="bg-white p-4 sm:p-5 rounded-lg border border-slate-200 shadow-sm hover:shadow transition-all flex flex-col justify-between">
           <span className="text-xs text-slate-500 font-semibold tracking-wide">
             Total Produk Terjual
           </span>
-          <p className="text-2xl font-black text-emerald-700 my-1.5 tracking-tight">
+          <p className="text-2xl font-extrabold text-emerald-800 my-1.5 tracking-tight font-mono tabular-nums">
             {summary.totalItemsSold} pcs
           </p>
           <span className="text-[11px] text-slate-400 font-medium">
@@ -212,7 +212,7 @@ export default function ReportsPage() {
       </div>
 
       {/* Chart: Daily Revenue & Gross Profit */}
-      <div className="bg-white p-5 rounded-xl border border-slate-200/90 shadow-[0_3px_12px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)] space-y-4">
+      <div className="bg-white p-4 sm:p-5 rounded-lg border border-slate-200 shadow-sm space-y-4">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-sm font-bold text-slate-900">
@@ -233,7 +233,7 @@ export default function ReportsPage() {
             Belum ada data penjualan pada periode yang dipilih.
           </div>
         ) : (
-          <div className="h-72 w-full">
+          <div className="h-72 w-full pt-2">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
@@ -250,7 +250,10 @@ export default function ReportsPage() {
                   tickFormatter={(val) => `Rp ${(val / 1000).toFixed(0)}k`}
                 />
                 <Tooltip
-                  formatter={(value: any) => [formatRupiah(Number(value)), ""]}
+                  formatter={(value: any, name: any) => [
+                    formatRupiah(Number(value)),
+                    name === "revenue" ? "Omzet" : "Laba Kotor",
+                  ]}
                   labelFormatter={(label) => `Tanggal: ${label}`}
                   contentStyle={{
                     backgroundColor: "#ffffff",
@@ -260,13 +263,11 @@ export default function ReportsPage() {
                   }}
                 />
                 <Legend
+                  formatter={(value) => (value === "revenue" ? "Omzet Penjualan" : "Laba Kotor")}
                   wrapperStyle={{ fontSize: "12px", paddingTop: "10px" }}
-                  formatter={(value) =>
-                    value === "revenue" ? "Omzet Penjualan" : "Laba Kotor"
-                  }
                 />
-                <Bar dataKey="revenue" name="revenue" fill="#059669" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="profit" name="profit" fill="#34d399" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="revenue" fill="#047857" name="revenue" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="grossProfit" fill="#10b981" name="grossProfit" radius={[3, 3, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -274,9 +275,9 @@ export default function ReportsPage() {
       </div>
 
       {/* Product Performance Section */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
         {/* Top Selling Products */}
-        <div className="bg-white p-5 rounded-xl border border-slate-200/90 shadow-[0_2px_10px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)]">
+        <div className="bg-white p-4 sm:p-5 rounded-lg border border-slate-200 shadow-sm">
           <h3 className="text-xs font-bold text-slate-900 mb-1">
             Produk Terlaris (Kuantitas)
           </h3>
@@ -291,14 +292,14 @@ export default function ReportsPage() {
               </p>
             ) : (
               bestSellingProducts.map((p, idx) => (
-                <div key={p.productId} className="py-2.5 flex justify-between items-center">
+                <div key={p.productId} className="py-2 flex justify-between items-center">
                   <div className="truncate pr-2">
                     <span className="font-semibold text-slate-800 block truncate">
                       {idx + 1}. {p.name}
                     </span>
                     <span className="text-[10px] text-slate-400 font-mono">{p.sku}</span>
                   </div>
-                  <span className="font-bold text-emerald-700 shrink-0">
+                  <span className="font-bold text-emerald-800 font-mono tabular-nums shrink-0">
                     {p.totalSold} terjual
                   </span>
                 </div>
@@ -308,7 +309,7 @@ export default function ReportsPage() {
         </div>
 
         {/* Highest Revenue Products */}
-        <div className="bg-white p-5 rounded-xl border border-slate-200/90 shadow-[0_2px_10px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)]">
+        <div className="bg-white p-4 sm:p-5 rounded-lg border border-slate-200 shadow-sm">
           <h3 className="text-xs font-bold text-slate-900 mb-1">
             Kontributor Omzet Terbesar
           </h3>
@@ -323,14 +324,14 @@ export default function ReportsPage() {
               </p>
             ) : (
               highestRevenueProducts.map((p, idx) => (
-                <div key={p.productId} className="py-2.5 flex justify-between items-center">
+                <div key={p.productId} className="py-2 flex justify-between items-center">
                   <div className="truncate pr-2">
                     <span className="font-semibold text-slate-800 block truncate">
                       {idx + 1}. {p.name}
                     </span>
-                    <span className="text-[10px] text-slate-400">{p.totalSold} terjual</span>
+                    <span className="text-[10px] text-slate-400 font-mono tabular-nums">{p.totalSold} terjual</span>
                   </div>
-                  <span className="font-bold text-slate-900 shrink-0">
+                  <span className="font-bold text-slate-900 font-mono tabular-nums shrink-0">
                     {formatRupiah(p.revenue)}
                   </span>
                 </div>
@@ -340,7 +341,7 @@ export default function ReportsPage() {
         </div>
 
         {/* Highest Profit Products */}
-        <div className="bg-white p-5 rounded-xl border border-slate-200/90 shadow-[0_2px_10px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)]">
+        <div className="bg-white p-4 sm:p-5 rounded-lg border border-slate-200 shadow-sm">
           <h3 className="text-xs font-bold text-slate-900 mb-1">
             Penyumbang Laba Terbesar
           </h3>
@@ -355,14 +356,14 @@ export default function ReportsPage() {
               </p>
             ) : (
               highestProfitProducts.map((p, idx) => (
-                <div key={p.productId} className="py-2.5 flex justify-between items-center">
+                <div key={p.productId} className="py-2 flex justify-between items-center">
                   <div className="truncate pr-2">
                     <span className="font-semibold text-slate-800 block truncate">
                       {idx + 1}. {p.name}
                     </span>
-                    <span className="text-[10px] text-slate-400">{p.totalSold} pcs</span>
+                    <span className="text-[10px] text-slate-400 font-mono tabular-nums">{p.totalSold} pcs</span>
                   </div>
-                  <span className="font-bold text-emerald-700 shrink-0">
+                  <span className="font-bold text-emerald-800 font-mono tabular-nums shrink-0">
                     +{formatRupiah(p.profit)}
                   </span>
                 </div>

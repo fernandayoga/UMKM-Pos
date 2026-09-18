@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Store, KeyRound, Mail, AlertCircle, ArrowRight } from "lucide-react";
+import { KeyRound, Mail, AlertCircle, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
@@ -50,8 +50,9 @@ export default function LoginPage() {
       <div className="w-full max-w-sm">
         {/* Brand identity */}
         <div className="text-center mb-8">
-          <div className="w-12 h-12 rounded-xl bg-emerald-600 flex items-center justify-center text-white mx-auto shadow-sm mb-3">
-            <Store className="w-6 h-6" />
+          <div className="w-16 h-16 rounded-2xl bg-white border border-slate-200 p-2 flex items-center justify-center mx-auto shadow-sm mb-3">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt="Logo UMKM POS" className="w-full h-full object-contain" />
           </div>
           <h1 className="text-xl font-bold text-slate-900 tracking-tight">
             UMKM POS & Inventory

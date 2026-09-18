@@ -17,17 +17,18 @@ import {
   Users,
   Settings,
   X,
-  Store,
   LogOut,
+  Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
+  onOpenAI?: () => void;
 }
 
-export function Sidebar({ isOpen, onClose }: SidebarProps) {
+export function Sidebar({ isOpen, onClose, onOpenAI }: SidebarProps) {
   const pathname = usePathname();
   const { data: session } = useSession();
   const userRole = session?.user?.role || "cashier";
@@ -126,8 +127,9 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         {/* Brand Header */}
         <div className="h-14 shrink-0 flex items-center justify-between px-5 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white">
-              <Store className="w-4 h-4" />
+            <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center bg-white border border-slate-200 shadow-2xs shrink-0">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo.png" alt="Logo UMKM POS" className="w-full h-full object-contain p-0.5" />
             </div>
             <div>
               <span className="font-bold text-sm tracking-tight text-slate-900 block leading-none">
@@ -173,14 +175,28 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                   />
                   <span>{item.name}</span>
                 </div>
-                {item.badge && (
-                  <span className="px-1.5 py-0.5 text-[10px] font-semibold bg-emerald-100 text-emerald-700 rounded">
-                    {item.badge}
-                  </span>
-                )}
+               
               </Link>
             );
           })}
+
+          {onOpenAI && (
+            <button
+              onClick={() => {
+                onClose();
+                onOpenAI();
+              }}
+              className="flex items-center justify-between w-full px-3 py-2 rounded-lg text-xs font-medium text-emerald-800 bg-emerald-50/70 hover:bg-emerald-100/80 border border-emerald-200 transition-colors mt-2"
+            >
+              <div className="flex items-center gap-2.5">
+                <Sparkles className="w-4 h-4 shrink-0 text-emerald-600" />
+                <span className="font-semibold">AI Assistant</span>
+              </div>
+              <span className="px-1.5 py-0.5 text-[9px] font-bold bg-emerald-600 text-white rounded">
+                AI
+              </span>
+            </button>
+          )}
         </nav>
 
         {/* Logout Button */}

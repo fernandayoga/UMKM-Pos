@@ -247,40 +247,40 @@ export default function InventoryPage() {
       </div>
 
       {/* Summary KPI Strip */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white p-5 rounded-xl border border-slate-200/90 shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_2px_rgba(15,23,42,0.04)] hover:shadow-[0_4px_16px_rgba(15,23,42,0.1)] hover:-translate-y-0.5 transition-all flex items-center justify-between">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+        <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm hover:shadow transition-all flex items-center justify-between">
           <div>
             <span className="text-xs text-slate-500 font-medium">Stok Aman</span>
-            <p className="text-2xl font-bold text-emerald-700 mt-1">{safeStockCount}</p>
+            <p className="text-2xl font-bold text-emerald-800 font-mono tabular-nums mt-1">{safeStockCount}</p>
           </div>
-          <span className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center font-bold text-base">
+          <span className="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center font-bold text-sm">
             ✓
           </span>
         </div>
 
-        <div className="bg-white p-5 rounded-xl border border-slate-200/90 shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_2px_rgba(15,23,42,0.04)] hover:shadow-[0_4px_16px_rgba(15,23,42,0.1)] hover:-translate-y-0.5 transition-all flex items-center justify-between">
+        <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm hover:shadow transition-all flex items-center justify-between">
           <div>
             <span className="text-xs text-slate-500 font-medium">Stok Menipis (Perlu Restock)</span>
-            <p className="text-2xl font-bold text-amber-600 mt-1">{lowStockCount}</p>
+            <p className="text-2xl font-bold text-amber-600 font-mono tabular-nums mt-1">{lowStockCount}</p>
           </div>
-          <span className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center font-bold text-base">
+          <span className="w-9 h-9 rounded-lg bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center font-bold text-sm">
             !
           </span>
         </div>
 
-        <div className="bg-white p-5 rounded-xl border border-slate-200/90 shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_2px_rgba(15,23,42,0.04)] hover:shadow-[0_4px_16px_rgba(15,23,42,0.1)] hover:-translate-y-0.5 transition-all flex items-center justify-between">
+        <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm hover:shadow transition-all flex items-center justify-between">
           <div>
             <span className="text-xs text-slate-500 font-medium">Stok Habis (Kosong)</span>
-            <p className="text-2xl font-bold text-rose-600 mt-1">{outOfStockCount}</p>
+            <p className="text-2xl font-bold text-rose-600 font-mono tabular-nums mt-1">{outOfStockCount}</p>
           </div>
-          <span className="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 border border-rose-200 flex items-center justify-center font-bold text-base">
+          <span className="w-9 h-9 rounded-lg bg-rose-50 text-rose-600 border border-rose-200 flex items-center justify-center font-bold text-sm">
             ✕
           </span>
         </div>
       </div>
 
       {/* Search & Filter Bar */}
-      <div className="bg-white p-4 rounded-xl border border-slate-200/90 flex flex-col sm:flex-row gap-3 items-center justify-between shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_2px_rgba(15,23,42,0.04)]">
+      <div className="bg-white p-3 rounded-lg border border-slate-200 flex flex-col sm:flex-row gap-2.5 items-center justify-between shadow-sm">
         <div className="relative w-full sm:w-80">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
@@ -297,7 +297,7 @@ export default function InventoryPage() {
             onClick={() => setStatusFilter("all")}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
               statusFilter === "all"
-                ? "bg-slate-900 text-white shadow-xs"
+                ? "bg-slate-900 text-white shadow-xs font-semibold"
                 : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
             }`}
           >
@@ -307,7 +307,7 @@ export default function InventoryPage() {
             onClick={() => setStatusFilter("safe")}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
               statusFilter === "safe"
-                ? "bg-emerald-700 text-white shadow-xs"
+                ? "bg-emerald-700 text-white shadow-xs font-semibold"
                 : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
             }`}
           >
@@ -317,7 +317,7 @@ export default function InventoryPage() {
             onClick={() => setStatusFilter("low")}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
               statusFilter === "low"
-                ? "bg-amber-600 text-white shadow-xs"
+                ? "bg-amber-600 text-white shadow-xs font-semibold"
                 : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
             }`}
           >
@@ -327,7 +327,7 @@ export default function InventoryPage() {
             onClick={() => setStatusFilter("out")}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
               statusFilter === "out"
-                ? "bg-rose-600 text-white shadow-xs"
+                ? "bg-rose-600 text-white shadow-xs font-semibold"
                 : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
             }`}
           >
@@ -337,7 +337,7 @@ export default function InventoryPage() {
       </div>
 
       {/* Inventory Table */}
-      <div className="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-[0_3px_12px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)]">
+      <div className="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-sm">
         {isLoading ? (
           <div className="p-8 text-center text-xs text-slate-400">
             Memuat data inventori...
@@ -349,25 +349,25 @@ export default function InventoryPage() {
             description="Periksa kata kunci pencarian atau filter status stok Anda."
           />
         ) : (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto max-h-[calc(100vh-230px)] overflow-y-auto">
             <table className="w-full text-left text-xs text-slate-600">
-              <thead className="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold uppercase tracking-wider text-[11px]">
+              <thead className="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold uppercase tracking-wider text-[11px] sticky top-0 z-10 shadow-2xs">
                 <tr>
-                  <th className="py-3 px-4">Nama Produk & SKU</th>
-                  <th className="py-3 px-4">Kategori</th>
-                  <th className="py-3 px-4 text-center">Stok Saat Ini</th>
-                  <th className="py-3 px-4 text-center">Batas Minimum</th>
-                  <th className="py-3 px-4 text-center">Status</th>
-                  <th className="py-3 px-4 text-right">Aksi Stok</th>
+                  <th className="py-2.5 px-3.5">Nama Produk & SKU</th>
+                  <th className="py-2.5 px-3.5">Kategori</th>
+                  <th className="py-2.5 px-3.5 text-center">Stok Saat Ini</th>
+                  <th className="py-2.5 px-3.5 text-center">Batas Minimum</th>
+                  <th className="py-2.5 px-3.5 text-center">Status</th>
+                  <th className="py-2.5 px-3.5 text-right">Aksi Stok</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {filteredProducts.map((p) => (
                   <tr
                     key={p._id}
-                    className="hover:bg-slate-50/70 transition-colors"
+                    className="hover:bg-slate-50/80 transition-colors"
                   >
-                    <td className="py-3 px-4">
+                    <td className="py-2.5 px-3.5">
                       <span className="font-semibold text-slate-900 block text-xs">
                         {p.name}
                       </span>
@@ -376,38 +376,38 @@ export default function InventoryPage() {
                       </span>
                     </td>
 
-                    <td className="py-3 px-4">
-                      <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px]">
+                    <td className="py-2.5 px-3.5">
+                      <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-medium">
                         {p.categoryName || "Umum"}
                       </span>
                     </td>
 
-                    <td className="py-3 px-4 text-center font-bold text-slate-900">
+                    <td className="py-2.5 px-3.5 text-center font-bold font-mono tabular-nums text-slate-900">
                       {p.stock}{" "}
-                      <span className="text-slate-400 font-normal">{p.unit}</span>
+                      <span className="text-slate-400 font-normal font-sans">{p.unit}</span>
                     </td>
 
-                    <td className="py-3 px-4 text-center text-slate-600">
+                    <td className="py-2.5 px-3.5 text-center font-mono tabular-nums text-slate-600">
                       {p.minimumStock}{" "}
-                      <span className="text-slate-400 font-normal">{p.unit}</span>
+                      <span className="text-slate-400 font-normal font-sans">{p.unit}</span>
                     </td>
 
-                    <td className="py-3 px-4 text-center">
+                    <td className="py-2.5 px-3.5 text-center">
                       <StockBadge stock={p.stock} minimumStock={p.minimumStock} />
                     </td>
 
-                    <td className="py-3 px-4 text-right">
+                    <td className="py-2.5 px-3.5 text-right">
                       <div className="flex items-center justify-end gap-1.5">
                         <button
                           onClick={() => handleOpenStockIn(p._id)}
-                          className="px-2.5 py-1 rounded bg-emerald-50 text-emerald-700 hover:bg-emerald-100 text-xs font-semibold transition-colors"
+                          className="px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200 text-xs font-semibold transition-colors"
                         >
                           + Stock In
                         </button>
                         {isOwner && (
                           <button
                             onClick={() => handleOpenAdjust(p._id)}
-                            className="px-2.5 py-1 rounded bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-medium transition-colors"
+                            className="px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-medium transition-colors"
                           >
                             Sesuaikan
                           </button>

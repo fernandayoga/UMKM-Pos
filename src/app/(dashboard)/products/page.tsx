@@ -286,8 +286,8 @@ export default function ProductsPage() {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white p-4 rounded-xl border border-slate-200/90 flex flex-col md:flex-row gap-3 items-center justify-between shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_2px_rgba(15,23,42,0.04)]">
-        <div className="flex flex-1 flex-col sm:flex-row gap-2.5 w-full">
+      <div className="bg-white p-3 rounded-lg border border-slate-200 flex flex-col md:flex-row gap-2.5 items-center justify-between shadow-sm">
+        <div className="flex flex-1 flex-col sm:flex-row gap-2 w-full">
           {/* Search */}
           <div className="relative flex-1">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -338,8 +338,8 @@ export default function ProductsPage() {
           onClick={() => setFilterLowStock(!filterLowStock)}
           className={`h-9 px-3 rounded-lg text-xs font-medium border flex items-center gap-1.5 transition-colors shrink-0 ${
             filterLowStock
-              ? "bg-amber-50 text-amber-700 border-amber-300 font-bold shadow-xs"
-              : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"
+              ? "bg-amber-50 text-amber-800 border-amber-300 font-bold shadow-xs"
+              : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50 shadow-xs"
           }`}
         >
           <AlertTriangle className="w-3.5 h-3.5 text-amber-600" />
@@ -348,7 +348,7 @@ export default function ProductsPage() {
       </div>
 
       {/* Product Table */}
-      <div className="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-[0_3px_12px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)]">
+      <div className="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-sm">
         {isLoading ? (
           <div className="p-8 text-center text-xs text-slate-400">
             Memuat katalog produk...
@@ -366,19 +366,19 @@ export default function ProductsPage() {
             onAction={isOwner && !search ? handleOpenAdd : undefined}
           />
         ) : (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto max-h-[calc(100vh-230px)] overflow-y-auto">
             <table className="w-full text-left text-xs text-slate-600">
-              <thead className="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold uppercase tracking-wider text-[11px]">
+              <thead className="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold uppercase tracking-wider text-[11px] sticky top-0 z-10 shadow-2xs">
                 <tr>
-                  <th className="py-3 px-4 w-16 text-center">Gambar</th>
-                  <th className="py-3 px-4">Nama Produk & SKU</th>
-                  <th className="py-3 px-4">Kategori</th>
-                  {isOwner && <th className="py-3 px-4 text-right">Harga Modal</th>}
-                  <th className="py-3 px-4 text-right">Harga Jual</th>
-                  {isOwner && <th className="py-3 px-4 text-right">Margin / Unit</th>}
-                  <th className="py-3 px-4 text-center">Stok Fisik</th>
-                  <th className="py-3 px-4 text-center">Status</th>
-                  {isOwner && <th className="py-3 px-4 text-right">Aksi</th>}
+                  <th className="py-2.5 px-3.5 w-14 text-center">Gambar</th>
+                  <th className="py-2.5 px-3.5">Nama Produk & SKU</th>
+                  <th className="py-2.5 px-3.5">Kategori</th>
+                  {isOwner && <th className="py-2.5 px-3.5 text-right">Harga Modal</th>}
+                  <th className="py-2.5 px-3.5 text-right">Harga Jual</th>
+                  {isOwner && <th className="py-2.5 px-3.5 text-right">Margin / Unit</th>}
+                  <th className="py-2.5 px-3.5 text-center">Stok Fisik</th>
+                  <th className="py-2.5 px-3.5 text-center">Status</th>
+                  {isOwner && <th className="py-2.5 px-3.5 text-right">Aksi</th>}
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -388,10 +388,10 @@ export default function ProductsPage() {
                   return (
                     <tr
                       key={p._id}
-                      className="hover:bg-slate-50/70 transition-colors"
+                      className="hover:bg-slate-50/80 transition-colors"
                     >
-                      <td className="py-3 px-4 text-center">
-                        <div className="w-10 h-10 rounded-md border border-slate-200 overflow-hidden bg-slate-100 mx-auto shrink-0">
+                      <td className="py-2.5 px-3.5 text-center">
+                        <div className="w-9 h-9 rounded border border-slate-200 overflow-hidden bg-slate-100 mx-auto shrink-0">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={p.image || "/placeholder.png"}
@@ -403,7 +403,7 @@ export default function ProductsPage() {
                           />
                         </div>
                       </td>
-                      <td className="py-3 px-4">
+                      <td className="py-2.5 px-3.5">
                         <span className="font-semibold text-slate-900 block text-xs">
                           {p.name}
                         </span>
@@ -412,24 +412,24 @@ export default function ProductsPage() {
                         </span>
                       </td>
 
-                      <td className="py-3 px-4">
-                        <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px]">
+                      <td className="py-2.5 px-3.5">
+                        <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-medium">
                           {p.categoryName || "Umum"}
                         </span>
                       </td>
 
                       {isOwner && (
-                        <td className="py-3 px-4 text-right text-slate-500 font-medium">
+                        <td className="py-2.5 px-3.5 text-right font-mono tabular-nums text-slate-500 font-medium">
                           {formatRupiah(p.costPrice)}
                         </td>
                       )}
 
-                      <td className="py-3 px-4 text-right font-bold text-slate-900">
+                      <td className="py-2.5 px-3.5 text-right font-mono tabular-nums font-bold text-slate-900">
                         {formatRupiah(p.sellingPrice)}
                       </td>
 
                       {isOwner && (
-                        <td className="py-3 px-4 text-right">
+                        <td className="py-2.5 px-3.5 text-right font-mono tabular-nums">
                           <span
                             className={`font-semibold ${
                               profitUnit >= 0 ? "text-emerald-700" : "text-rose-600"
@@ -440,27 +440,27 @@ export default function ProductsPage() {
                         </td>
                       )}
 
-                      <td className="py-3 px-4 text-center font-semibold text-slate-800">
-                        {p.stock} <span className="text-slate-400 font-normal">{p.unit}</span>
+                      <td className="py-2.5 px-3.5 text-center font-mono tabular-nums font-semibold text-slate-800">
+                        {p.stock} <span className="text-slate-400 font-normal font-sans">{p.unit}</span>
                       </td>
 
-                      <td className="py-3 px-4 text-center">
+                      <td className="py-2.5 px-3.5 text-center">
                         <StockBadge stock={p.stock} minimumStock={p.minimumStock} />
                       </td>
 
                       {isOwner && (
-                        <td className="py-3 px-4 text-right">
+                        <td className="py-2.5 px-3.5 text-right">
                           <div className="flex items-center justify-end gap-1.5">
                             <button
                               onClick={() => handleOpenEdit(p)}
-                              className="p-1.5 rounded-lg text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors"
+                              className="p-1.5 rounded-md text-slate-500 hover:text-emerald-700 hover:bg-emerald-50 transition-colors"
                               title="Edit Produk"
                             >
                               <Edit2 className="w-3.5 h-3.5" />
                             </button>
                             <button
                               onClick={() => setProductToDelete(p)}
-                              className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                              className="p-1.5 rounded-md text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition-colors"
                               title="Hapus Produk"
                             >
                               <Trash2 className="w-3.5 h-3.5" />

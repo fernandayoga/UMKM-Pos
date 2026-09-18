@@ -30,12 +30,14 @@ export default withAuth(
     callbacks: {
       authorized: ({ token, req }) => {
         const pathname = req.nextUrl.pathname;
-        // Allow public routes
+        // Allow public routes and static assets
         if (
           pathname.startsWith("/login") ||
           pathname.startsWith("/api/auth") ||
           pathname.startsWith("/_next") ||
-          pathname === "/favicon.ico"
+          pathname === "/favicon.ico" ||
+          pathname === "/logo.png" ||
+          /\.(?:svg|png|jpg|jpeg|gif|webp|ico)$/i.test(pathname)
         ) {
           return true;
         }
@@ -56,9 +58,9 @@ export const config = {
      * - api/auth (auth endpoints)
      * - _next/static (static files)
      * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
+     * - favicon.ico, logo.png & image assets
      * - login
      */
-    "/((?!api/auth|_next/static|_next/image|favicon.ico|login).*)",
+    "/((?!api/auth|_next/static|_next/image|favicon.ico|logo.png|placeholder.png|placeholder.svg|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$|login).*)",
   ],
 };

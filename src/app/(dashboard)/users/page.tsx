@@ -156,7 +156,7 @@ export default function UsersPage() {
         </Button>
       </div>
 
-      <div className="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-[0_3px_12px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)]">
+      <div className="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-sm">
         {isLoading ? (
           <div className="p-8 text-center text-xs text-slate-400">
             Memuat daftar pengguna...
@@ -170,16 +170,16 @@ export default function UsersPage() {
             onAction={handleOpenAdd}
           />
         ) : (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto max-h-[calc(100vh-230px)] overflow-y-auto">
             <table className="w-full text-left text-xs text-slate-600">
-              <thead className="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold uppercase tracking-wider text-[11px]">
+              <thead className="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold uppercase tracking-wider text-[11px] sticky top-0 z-10 shadow-2xs">
                 <tr>
-                  <th className="py-3 px-4">Nama Lengkap</th>
-                  <th className="py-3 px-4">Email Login</th>
-                  <th className="py-3 px-4 text-center">Peran (Role)</th>
-                  <th className="py-3 px-4 text-center">Status</th>
-                  <th className="py-3 px-4">Terdaftar Sejak</th>
-                  <th className="py-3 px-4 text-right">Aksi</th>
+                  <th className="py-2.5 px-3.5">Nama Lengkap</th>
+                  <th className="py-2.5 px-3.5">Email Login</th>
+                  <th className="py-2.5 px-3.5 text-center">Peran (Role)</th>
+                  <th className="py-2.5 px-3.5 text-center">Status</th>
+                  <th className="py-2.5 px-3.5">Terdaftar Sejak</th>
+                  <th className="py-2.5 px-3.5 text-right">Aksi</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -187,23 +187,23 @@ export default function UsersPage() {
                   const isCurrent = u._id === currentUserId;
 
                   return (
-                    <tr key={u._id} className="hover:bg-slate-50/70 transition-colors">
-                      <td className="py-3 px-4">
+                    <tr key={u._id} className="hover:bg-slate-50/80 transition-colors">
+                      <td className="py-2.5 px-3.5">
                         <span className="font-semibold text-slate-900 block text-xs">
                           {u.name}
                         </span>
                         {isCurrent && (
-                          <span className="text-[10px] text-emerald-600 font-medium">
+                          <span className="text-[10px] text-emerald-700 font-medium">
                             (Akun Anda Saat Ini)
                           </span>
                         )}
                       </td>
 
-                      <td className="py-3 px-4 font-mono text-slate-600">
+                      <td className="py-2.5 px-3.5 font-mono text-slate-600">
                         {u.email}
                       </td>
 
-                      <td className="py-3 px-4 text-center">
+                      <td className="py-2.5 px-3.5 text-center">
                         <span
                           className={`px-2 py-0.5 rounded text-[10px] font-semibold uppercase ${
                             u.role === "owner"
@@ -215,7 +215,7 @@ export default function UsersPage() {
                         </span>
                       </td>
 
-                      <td className="py-3 px-4 text-center">
+                      <td className="py-2.5 px-3.5 text-center">
                         <span
                           className={`inline-flex items-center gap-1 text-[11px] font-semibold ${
                             u.isActive ? "text-emerald-700" : "text-slate-400"
@@ -235,24 +235,24 @@ export default function UsersPage() {
                         </span>
                       </td>
 
-                      <td className="py-3 px-4 text-slate-500 whitespace-nowrap">
+                      <td className="py-2.5 px-3.5 text-slate-500 whitespace-nowrap">
                         {formatDate(u.createdAt, false)}
                       </td>
 
-                      <td className="py-3 px-4 text-right">
+                      <td className="py-2.5 px-3.5 text-right">
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={() => handleOpenEdit(u)}
-                            className="p-1.5 rounded-lg text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors"
-                            title="Edit Pengguna"
+                            className="p-1.5 rounded-md text-slate-500 hover:text-emerald-700 hover:bg-emerald-50 transition-colors"
+                            title="Edit Akun"
                           >
                             <Edit2 className="w-3.5 h-3.5" />
                           </button>
                           {!isCurrent && (
                             <button
                               onClick={() => setUserToDelete(u)}
-                              className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition-colors"
-                              title="Hapus Pengguna"
+                              className="p-1.5 rounded-md text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                              title="Hapus Akun"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
                             </button>

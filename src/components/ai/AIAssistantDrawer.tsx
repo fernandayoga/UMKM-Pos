@@ -4,8 +4,12 @@ import React, { useState, useRef, useEffect } from "react";
 import { Sparkles, X, Send, Bot, User as UserIcon, RotateCcw, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export function AIAssistantDrawer() {
-  const [isOpen, setIsOpen] = useState(false);
+export interface AIAssistantDrawerProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export function AIAssistantDrawer({ isOpen, onClose }: AIAssistantDrawerProps) {
   const [messages, setMessages] = useState<
     Array<{ id: string; role: "user" | "assistant"; content: string }>
   >([
@@ -34,6 +38,17 @@ export function AIAssistantDrawer() {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages, isOpen]);
+
+  // Handle ESC key to close drawer
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
   const handleSendMessage = async (textToSend?: string) => {
     const query = textToSend || input;
@@ -98,18 +113,14 @@ export function AIAssistantDrawer() {
 
   return (
     <>
-      {/* Floating Action Button in bottom-right corner */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className={cn(
-          "fixed bottom-5 right-5 z-40 flex items-center gap-2 px-3.5 py-2.5 rounded-full bg-emerald-600 text-white shadow-md hover:bg-emerald-700 transition-all text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2",
-          isOpen && "scale-0 opacity-0 pointer-events-none"
-        )}
-        aria-label="Buka AI Business Assistant"
-      >
-        <Sparkles className="w-4 h-4 text-amber-300" />
-        <span>AI Business Assistant</span>
-      </button>
+      {/* Backdrop for Drawer */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-slate-900/30 z-50 transition-opacity backdrop-blur-[1px]"
+          onClick={onClose}
+          aria-hidden="true"
+        />
+      )}
 
       {/* Slide-over Drawer */}
       <div
@@ -121,12 +132,15 @@ export function AIAssistantDrawer() {
         {/* Drawer Header */}
         <div className="p-3.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center shadow-xs">
               <Bot className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-xs font-bold text-slate-900 leading-tight">
-                AI Business Assistant
+              <h3 className="text-xs font-bold text-slate-900 leading-tight flex items-center gap-1.5">
+                <span>AI Business Assistant</span>
+                <span className="px-1.5 py-0.2 rounded text-[9px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                  Live DB
+                </span>
               </h3>
               <p className="text-[10px] text-slate-500">
                 Terhubung ke Data Toko MongoDB
@@ -143,7 +157,7 @@ export function AIAssistantDrawer() {
               <RotateCcw className="w-3.5 h-3.5" />
             </button>
             <button
-              onClick={() => setIsOpen(false)}
+              onClick={onClose}
               className="p-1.5 rounded-md text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
               aria-label="Tutup Asisten"
             >

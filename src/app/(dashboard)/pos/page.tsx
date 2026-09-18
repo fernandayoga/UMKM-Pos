@@ -15,6 +15,8 @@ import {
   QrCode,
   Package,
   X,
+  LayoutGrid,
+  List,
 } from "lucide-react";
 import { IProduct, ICategory, PaymentMethod, ISale } from "@/types";
 import { formatRupiah } from "@/lib/utils";
@@ -31,6 +33,7 @@ export default function POSPage() {
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [isLoading, setIsLoading] = useState(true);
 
   // Cart state: map of productId -> quantity
@@ -131,34 +134,37 @@ export default function POSPage() {
       return;
     }
 
+    const currentQty = cart.get(product._id) || 0;
+    if (currentQty + 1 > product.stock) {
+      showError(`Maksimal stok tersedia untuk ${product.name} adalah ${product.stock} ${product.unit}.`);
+      return;
+    }
+
     setCart((prev) => {
       const next = new Map(prev);
-      const currentQty = next.get(product._id) || 0;
-      if (currentQty + 1 > product.stock) {
-        showError(`Maksimal stok tersedia untuk ${product.name} adalah ${product.stock} ${product.unit}.`);
-        return prev;
-      }
       next.set(product._id, currentQty + 1);
       return next;
     });
   };
 
   const updateQuantity = (productId: string, delta: number) => {
+    const currentQty = cart.get(productId) || 0;
+    const product = products.find((p) => p._id === productId);
+
+    const newQty = currentQty + delta;
+    if (newQty <= 0) {
+      removeFromCart(productId);
+      return;
+    }
+
+    if (product && newQty > product.stock) {
+      showError(`Stok tidak mencukupi. Sisa stok: ${product.stock} ${product.unit}.`);
+      return;
+    }
+
     setCart((prev) => {
       const next = new Map(prev);
-      const currentQty = next.get(productId) || 0;
-      const product = products.find((p) => p._id === productId);
-
-      const newQty = currentQty + delta;
-      if (newQty <= 0) {
-        next.delete(productId);
-      } else {
-        if (product && newQty > product.stock) {
-          showError(`Stok tidak mencukupi. Sisa stok: ${product.stock} ${product.unit}.`);
-          return prev;
-        }
-        next.set(productId, newQty);
-      }
+      next.set(productId, newQty);
       return next;
     });
   };
@@ -252,30 +258,63 @@ export default function POSPage() {
           </p>
         </div>
 
-        {/* Search bar */}
-        <div className="relative w-full sm:w-72">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-          <input
-            type="text"
-            placeholder="Cari produk atau SKU..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full h-9 pl-9 pr-3 rounded-lg border border-slate-300 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent transition-colors"
-          />
+        {/* View Mode Toggle & Search */}
+        <div className="flex items-center gap-2.5 w-full sm:w-auto">
+          {/* View Mode Switcher */}
+          <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 shrink-0">
+            <button
+              type="button"
+              onClick={() => setViewMode("grid")}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-semibold transition-colors ${
+                viewMode === "grid"
+                  ? "bg-white text-slate-900 shadow-xs"
+                  : "text-slate-500 hover:text-slate-800"
+              }`}
+              title="Tampilan Grid Compact (8–12 produk langsung terlihat)"
+            >
+              <LayoutGrid className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Grid Compact</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode("list")}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-semibold transition-colors ${
+                viewMode === "list"
+                  ? "bg-white text-slate-900 shadow-xs"
+                  : "text-slate-500 hover:text-slate-800"
+              }`}
+              title="Tampilan List / Row (Cepat untuk Scan Barcode & SKU)"
+            >
+              <List className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">List View</span>
+            </button>
+          </div>
+
+          {/* Search bar */}
+          <div className="relative flex-1 sm:w-64">
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Cari produk atau SKU..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full h-9 pl-9 pr-3 rounded-lg border border-slate-300 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent transition-colors"
+            />
+          </div>
         </div>
       </div>
 
-      {/* Main Grid: Catalog on left (7 cols), Cart on right (5 cols) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* Left: Products Catalog (8 cols) */}
-        <div className="lg:col-span-7 xl:col-span-8 space-y-4">
+      {/* Main Grid: Catalog on left (7-8 cols), Cart on right (4-5 cols) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+        {/* Left: Products Catalog */}
+        <div className="lg:col-span-7 xl:col-span-8 space-y-3.5">
           {/* Category Filter Pills */}
           <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
             <button
               onClick={() => setSelectedCategory("all")}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
                 selectedCategory === "all"
-                  ? "bg-emerald-600 text-white shadow-sm"
+                  ? "bg-emerald-700 text-white shadow-xs font-semibold"
                   : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
               }`}
             >
@@ -287,7 +326,7 @@ export default function POSPage() {
                 onClick={() => setSelectedCategory(cat._id)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
                   selectedCategory === cat._id
-                    ? "bg-emerald-600 text-white shadow-sm"
+                    ? "bg-emerald-700 text-white shadow-xs font-semibold"
                     : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
                 }`}
               >
@@ -296,28 +335,28 @@ export default function POSPage() {
             ))}
           </div>
 
-          {/* Product Cards Grid */}
+          {/* Catalog Content */}
           {isLoading ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-5">
-              {[...Array(9)].map((_, i) => (
+            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3">
+              {[...Array(8)].map((_, i) => (
                 <div
                   key={i}
-                  className="h-[220px] rounded-xl border border-slate-200 bg-white p-3 animate-pulse flex flex-col"
+                  className="h-44 rounded-lg border border-slate-200 bg-white p-2.5 animate-pulse flex flex-col justify-between"
                 >
-                  <div className="w-full h-24 bg-slate-100 rounded-lg mb-3 shrink-0" />
-                  <div className="space-y-2 flex-1">
-                    <div className="h-3 bg-slate-100 rounded w-1/3" />
-                    <div className="h-4 bg-slate-100 rounded w-3/4" />
+                  <div className="w-full h-20 bg-slate-100 rounded mb-2 shrink-0" />
+                  <div className="space-y-1.5 flex-1">
+                    <div className="h-2.5 bg-slate-100 rounded w-1/3" />
+                    <div className="h-3.5 bg-slate-100 rounded w-3/4" />
                   </div>
-                  <div className="pt-2 mt-2 border-t border-slate-100 flex justify-between">
-                     <div className="h-4 bg-slate-100 rounded w-1/3" />
-                     <div className="h-4 bg-slate-100 rounded w-1/4" />
+                  <div className="pt-2 border-t border-slate-100 flex justify-between">
+                    <div className="h-3.5 bg-slate-100 rounded w-1/3" />
+                    <div className="h-3.5 bg-slate-100 rounded w-1/4" />
                   </div>
                 </div>
               ))}
             </div>
           ) : filteredProducts.length === 0 ? (
-            <div className="text-center py-12 bg-white rounded-xl border border-slate-200 p-6">
+            <div className="text-center py-12 bg-white rounded-lg border border-slate-200 p-6 shadow-xs">
               <Package className="w-8 h-8 mx-auto text-slate-400 mb-2" />
               <p className="text-sm font-semibold text-slate-800">
                 Tidak ada produk ditemukan
@@ -326,76 +365,244 @@ export default function POSPage() {
                 Ubah kata kunci pencarian atau pilih kategori lain.
               </p>
             </div>
-          ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-5">
+          ) : viewMode === "grid" ? (
+            /* Mode 1: Grid Compact (8-12 produk langsung terlihat) */
+            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-3">
               {filteredProducts.map((product) => {
                 const isOutOfStock = product.stock <= 0;
                 const qtyInCart = cart.get(product._id) || 0;
 
                 return (
-                  <button
+                  <div
                     key={product._id}
-                    onClick={() => addToCart(product)}
-                    disabled={isOutOfStock}
-                    className={`relative text-left p-3 rounded-xl border bg-white transition-all flex flex-col h-full ${
+                    onClick={() => !isOutOfStock && addToCart(product)}
+                    className={`group relative text-left p-2.5 rounded-lg border bg-white transition-all flex flex-col justify-between cursor-pointer select-none ${
                       isOutOfStock
                         ? "opacity-50 cursor-not-allowed border-slate-200 bg-slate-50"
                         : qtyInCart > 0
-                        ? "border-emerald-600 ring-2 ring-emerald-500/25 shadow-[0_4px_16px_rgba(5,150,105,0.12)] bg-emerald-50/20 -translate-y-0.5"
-                        : "border-slate-200/90 shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_2px_rgba(15,23,42,0.04)] hover:shadow-[0_6px_20px_rgba(15,23,42,0.1)] hover:border-emerald-400 hover:-translate-y-0.5"
+                        ? "border-emerald-600 ring-1 ring-emerald-500 shadow-xs bg-emerald-50/20"
+                        : "border-slate-200 shadow-xs hover:border-emerald-400 hover:shadow-sm"
                     }`}
                   >
-                    {qtyInCart > 0 && (
-                      <>
-                        <div 
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            removeFromCart(product._id);
-                          }}
-                          className="absolute -top-2 -left-2 bg-rose-500 text-white w-5 h-5 rounded-full flex items-center justify-center shadow-md z-10 hover:bg-rose-600 transition-colors"
-                          title="Hapus dari keranjang"
-                        >
-                          <X className="w-3 h-3" />
-                        </div>
-                        <span className="absolute -top-2 -right-2 bg-emerald-600 text-white text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-md z-10">
-                          {qtyInCart}
-                        </span>
-                      </>
-                    )}
-
-                    <div className="w-full h-28 mb-3 rounded-lg overflow-hidden bg-slate-100 border border-slate-100 shrink-0">
+                    {/* Compact Image Container */}
+                    <div className="w-full h-20 mb-2 rounded overflow-hidden bg-slate-100 border border-slate-100 shrink-0 relative">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img 
-                        src={product.image || "/placeholder.png"} 
+                      <img
+                        src={product.image || "/placeholder.png"}
                         alt={product.name}
-                        className="w-full h-full object-cover scale-[1.02]"
+                        className="w-full h-full object-cover"
                         onError={(e) => {
                           (e.target as HTMLImageElement).src = "/placeholder.png";
                         }}
                       />
+
+                      {/* Out of Stock Overlay */}
+                      {isOutOfStock && (
+                        <div className="absolute inset-0 bg-slate-900/60 flex items-center justify-center">
+                          <span className="text-[10px] font-bold text-white bg-rose-600 px-2 py-0.5 rounded">
+                            Habis
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Remove from Cart Button (Pojok Kiri Atas) */}
+                      {qtyInCart > 0 && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            removeFromCart(product._id);
+                          }}
+                          className="absolute top-1 left-1 z-10 w-5 h-5 bg-rose-600 hover:bg-rose-700 active:scale-90 text-white rounded-full flex items-center justify-center shadow-xs border border-white transition-transform"
+                          title="Hapus dari keranjang"
+                        >
+                          <X className="w-3 h-3 stroke-[2.5]" />
+                        </button>
+                      )}
+
+                      {/* In Cart Indicator */}
+                      {qtyInCart > 0 && (
+                        <div className="absolute top-1 right-1 bg-emerald-700 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-xs">
+                          {qtyInCart} di keranjang
+                        </div>
+                      )}
                     </div>
 
-                    <div className="flex-1 flex flex-col justify-between w-full">
+                    {/* Product Details */}
+                    <div className="flex-1 flex flex-col justify-between">
                       <div>
-                        <span className="text-[10px] font-mono text-slate-400 block uppercase">
+                        <span className="text-[10px] font-mono text-slate-400 block uppercase truncate">
                           {product.sku}
                         </span>
-                        <h3 className="text-xs font-semibold text-slate-900 line-clamp-2 mt-0.5 leading-snug">
+                        <h3
+                          className="text-xs font-semibold text-slate-900 line-clamp-1 mt-0.5 leading-tight"
+                          title={product.name}
+                        >
                           {product.name}
                         </h3>
                       </div>
 
-                      <div className="pt-2 border-t border-slate-100 mt-2 flex items-center justify-between w-full">
-                        <span className="text-xs font-bold text-emerald-700">
-                          {formatRupiah(product.sellingPrice)}
-                        </span>
-                        <StockBadge
-                          stock={product.stock}
-                          minimumStock={product.minimumStock}
-                        />
+                      {/* Footer: Price + Direct Quantity Stepper */}
+                      <div className="pt-2 border-t border-slate-100 mt-2 flex items-center justify-between gap-1 w-full">
+                        <div>
+                          <span className="text-xs font-bold text-emerald-800 font-mono tabular-nums block">
+                            {formatRupiah(product.sellingPrice)}
+                          </span>
+                        </div>
+
+                        {/* Direct +/- Shortcut Buttons */}
+                        <div
+                          onClick={(e) => e.stopPropagation()}
+                          className="shrink-0"
+                        >
+                          {qtyInCart > 0 ? (
+                            <div className="flex items-center border border-emerald-300 rounded overflow-hidden bg-white shadow-2xs">
+                              <button
+                                type="button"
+                                onClick={() => updateQuantity(product._id, -1)}
+                                className="px-1.5 py-1 text-slate-600 hover:bg-slate-100 transition-colors"
+                                title="Kurangi kuantiti"
+                              >
+                                <Minus className="w-2.5 h-2.5" />
+                              </button>
+                              <span className="w-5 text-center text-[10px] font-bold text-emerald-800 tabular-nums">
+                                {qtyInCart}
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => updateQuantity(product._id, 1)}
+                                className="px-1.5 py-1 text-slate-600 hover:bg-slate-100 transition-colors"
+                                title="Tambah kuantiti"
+                              >
+                                <Plus className="w-2.5 h-2.5" />
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => addToCart(product)}
+                              disabled={isOutOfStock}
+                              className="px-2 py-1 text-[11px] font-semibold rounded border border-slate-200 bg-slate-50 hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-300 text-slate-700 transition-colors flex items-center gap-1 disabled:opacity-40"
+                              title="Tambah ke keranjang"
+                            >
+                              <Plus className="w-3 h-3" />
+                              <span className="hidden xl:inline">Tambah</span>
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </button>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            /* Mode 2: List / Row View (Untuk kasir cepat & scan barcode) */
+            <div className="space-y-1.5">
+              {filteredProducts.map((product) => {
+                const isOutOfStock = product.stock <= 0;
+                const qtyInCart = cart.get(product._id) || 0;
+
+                return (
+                  <div
+                    key={product._id}
+                    onClick={() => !isOutOfStock && addToCart(product)}
+                    className={`p-2 rounded-lg border flex items-center justify-between gap-3 transition-colors cursor-pointer select-none ${
+                      isOutOfStock
+                        ? "opacity-50 cursor-not-allowed bg-slate-50 border-slate-200"
+                        : qtyInCart > 0
+                        ? "bg-emerald-50/40 border-emerald-300 shadow-xs"
+                        : "bg-white border-slate-200 hover:border-emerald-300 hover:bg-slate-50/70 shadow-xs"
+                    }`}
+                  >
+                    {/* Left: Thumbnail + Name + SKU */}
+                    <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                      <div className="w-10 h-10 rounded overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={product.image || "/placeholder.png"}
+                          alt={product.name}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = "/placeholder.png";
+                          }}
+                        />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          <p className="text-xs font-semibold text-slate-900 truncate">
+                            {product.name}
+                          </p>
+                          <span className="font-mono text-[10px] text-slate-400 px-1.5 py-0.2 bg-slate-100 rounded shrink-0">
+                            {product.sku}
+                          </span>
+                        </div>
+                        <p className="text-[10px] text-slate-500">
+                          {product.categoryName || "Umum"}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Middle: Stock Badge + Price */}
+                    <div className="flex items-center gap-3 shrink-0">
+                      <StockBadge
+                        stock={product.stock}
+                        minimumStock={product.minimumStock}
+                      />
+                      <span className="text-xs font-bold text-emerald-800 font-mono tabular-nums w-24 text-right">
+                        {formatRupiah(product.sellingPrice)}
+                      </span>
+                    </div>
+
+                    {/* Right: Quantity Stepper or Add Button */}
+                    <div
+                      className="shrink-0"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {qtyInCart > 0 ? (
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => removeFromCart(product._id)}
+                            className="p-1 rounded text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                            title="Hapus dari keranjang"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                          <div className="flex items-center border border-emerald-300 rounded overflow-hidden bg-white shadow-2xs">
+                            <button
+                              type="button"
+                              onClick={() => updateQuantity(product._id, -1)}
+                              className="p-1 text-slate-600 hover:bg-slate-100 transition-colors"
+                              title="Kurangi kuantiti"
+                            >
+                              <Minus className="w-3 h-3" />
+                            </button>
+                            <span className="w-6 text-center text-xs font-bold text-emerald-800 tabular-nums">
+                              {qtyInCart}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => updateQuantity(product._id, 1)}
+                              className="p-1 text-slate-600 hover:bg-slate-100 transition-colors"
+                              title="Tambah kuantiti"
+                            >
+                              <Plus className="w-3 h-3" />
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => addToCart(product)}
+                          disabled={isOutOfStock}
+                          className="px-2.5 py-1 text-xs font-medium rounded border border-slate-200 bg-white hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-300 transition-colors disabled:opacity-40"
+                        >
+                          + Tambah
+                        </button>
+                      )}
+                    </div>
+                  </div>
                 );
               })}
             </div>
@@ -403,7 +610,7 @@ export default function POSPage() {
         </div>
 
         {/* Right: Cart Column (5 cols on lg, 4 on xl) */}
-        <div className="hidden lg:block lg:col-span-5 xl:col-span-4 bg-white rounded-xl border border-slate-200/90 shadow-[0_4px_24px_rgba(15,23,42,0.08),0_1px_3px_rgba(0,0,0,0.04)] p-5 sticky top-20">
+        <div className="hidden lg:block lg:col-span-5 xl:col-span-4 bg-white rounded-lg border border-slate-200 shadow-sm p-4 sticky top-16">
           <div className="flex items-center justify-between pb-3 border-b border-slate-100">
             <div className="flex items-center gap-2">
               <ShoppingCart className="w-4 h-4 text-slate-700" />
@@ -435,33 +642,13 @@ export default function POSPage() {
                     <p className="text-xs font-semibold text-slate-800 truncate">
                       {product.name}
                     </p>
-                    <p className="text-[11px] text-slate-500">
+                    <p className="text-[11px] text-slate-500 font-mono tabular-nums">
                       {formatRupiah(product.sellingPrice)} × {quantity}
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-1.5">
-                    <div className="flex items-center border border-slate-200 rounded-lg overflow-hidden bg-slate-50">
-                      <button
-                        onClick={() => updateQuantity(product._id, -1)}
-                        className="p-1 text-slate-600 hover:bg-slate-200 transition-colors"
-                        aria-label="Kurangi kuantiti"
-                      >
-                        <Minus className="w-3 h-3" />
-                      </button>
-                      <span className="w-6 text-center text-xs font-bold text-slate-800">
-                        {quantity}
-                      </span>
-                      <button
-                        onClick={() => updateQuantity(product._id, 1)}
-                        className="p-1 text-slate-600 hover:bg-slate-200 transition-colors"
-                        aria-label="Tambah kuantiti"
-                      >
-                        <Plus className="w-3 h-3" />
-                      </button>
-                    </div>
-
-                    <span className="text-xs font-semibold text-slate-800 w-20 text-right">
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="text-xs font-bold text-slate-800 font-mono tabular-nums">
                       {formatRupiah(itemTotal)}
                     </span>
 
@@ -469,6 +656,7 @@ export default function POSPage() {
                       onClick={() => removeFromCart(product._id)}
                       className="p-1 text-slate-400 hover:text-rose-600 transition-colors"
                       aria-label="Hapus item"
+                      title="Hapus item"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -482,7 +670,7 @@ export default function POSPage() {
           <div className="pt-3 border-t border-slate-100 space-y-2 text-xs">
             <div className="flex justify-between text-slate-600">
               <span>Subtotal ({totalCartCount} item)</span>
-              <span className="font-semibold">{formatRupiah(subtotal)}</span>
+              <span className="font-semibold font-mono tabular-nums">{formatRupiah(subtotal)}</span>
             </div>
 
             <div className="flex items-center justify-between text-slate-600">
@@ -494,13 +682,13 @@ export default function POSPage() {
                 value={discountAmount || ""}
                 onChange={(e) => setDiscountAmount(Math.max(0, Number(e.target.value) || 0))}
                 placeholder="0"
-                className="w-24 px-2 py-1 text-right text-xs rounded border border-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-600"
+                className="w-24 px-2 py-1 text-right text-xs rounded border border-slate-200 font-mono tabular-nums focus:outline-none focus:ring-1 focus:ring-emerald-600"
               />
             </div>
 
             <div className="pt-2 border-t border-slate-100 flex justify-between items-center text-slate-900">
               <span className="text-sm font-bold">TOTAL TAGIHAN</span>
-              <span className="text-base font-extrabold text-emerald-700">
+              <span className="text-base font-extrabold text-emerald-800 font-mono tabular-nums">
                 {formatRupiah(grandTotal)}
               </span>
             </div>
@@ -544,14 +732,14 @@ export default function POSPage() {
       >
         <div className="space-y-4">
           {/* Total display box */}
-          <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center">
+          <div className="p-3.5 bg-slate-50 rounded-lg border border-slate-200 flex justify-between items-center">
             <div>
               <span className="text-xs text-slate-500 block">Total Pembayaran</span>
-              <span className="text-lg font-bold text-emerald-700">
+              <span className="text-lg font-bold text-emerald-800 font-mono tabular-nums">
                 {formatRupiah(grandTotal)}
               </span>
             </div>
-            <span className="text-xs text-slate-500 font-medium">
+            <span className="text-xs text-slate-500 font-medium font-mono tabular-nums">
               {cartItems.length} produk ({totalCartCount} pcs)
             </span>
           </div>
@@ -567,7 +755,7 @@ export default function POSPage() {
                 onClick={() => setPaymentMethod("cash")}
                 className={`p-2.5 rounded-lg border text-center text-xs font-medium flex flex-col items-center gap-1.5 transition-colors ${
                   paymentMethod === "cash"
-                    ? "border-emerald-600 bg-emerald-50 text-emerald-700 font-bold"
+                    ? "border-emerald-700 bg-emerald-50 text-emerald-800 font-bold"
                     : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
                 }`}
               >
@@ -583,7 +771,7 @@ export default function POSPage() {
                 }}
                 className={`p-2.5 rounded-lg border text-center text-xs font-medium flex flex-col items-center gap-1.5 transition-colors ${
                   paymentMethod === "qris"
-                    ? "border-emerald-600 bg-emerald-50 text-emerald-700 font-bold"
+                    ? "border-emerald-700 bg-emerald-50 text-emerald-800 font-bold"
                     : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
                 }`}
               >
@@ -599,7 +787,7 @@ export default function POSPage() {
                 }}
                 className={`p-2.5 rounded-lg border text-center text-xs font-medium flex flex-col items-center gap-1.5 transition-colors ${
                   paymentMethod === "transfer"
-                    ? "border-emerald-600 bg-emerald-50 text-emerald-700 font-bold"
+                    ? "border-emerald-700 bg-emerald-50 text-emerald-800 font-bold"
                     : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
                 }`}
               >
@@ -622,7 +810,7 @@ export default function POSPage() {
                   step="1000"
                   value={cashGiven || ""}
                   onChange={(e) => setCashGiven(Number(e.target.value) || 0)}
-                  className="w-full h-10 px-3 text-sm font-semibold rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                  className="w-full h-10 px-3 text-sm font-semibold rounded-lg border border-slate-300 font-mono tabular-nums focus:outline-none focus:ring-2 focus:ring-emerald-600"
                   placeholder="Masukkan jumlah pembayaran"
                   autoFocus
                 />
@@ -642,7 +830,7 @@ export default function POSPage() {
                     key={amount}
                     type="button"
                     onClick={() => setCashGiven((prev) => (prev > 0 ? prev + amount : amount))}
-                    className="px-2.5 py-1 text-xs bg-white hover:bg-slate-50 rounded border border-slate-200 text-slate-700 font-medium"
+                    className="px-2.5 py-1 text-xs bg-white hover:bg-slate-50 rounded border border-slate-200 text-slate-700 font-mono tabular-nums font-medium"
                   >
                     +{formatRupiah(amount)}
                   </button>
@@ -653,8 +841,8 @@ export default function POSPage() {
               <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 flex justify-between items-center text-xs">
                 <span className="font-medium text-slate-600">Kembalian:</span>
                 <span
-                  className={`text-sm font-bold ${
-                    cashGiven < grandTotal ? "text-rose-600" : "text-emerald-700"
+                  className={`text-sm font-bold font-mono tabular-nums ${
+                    cashGiven < grandTotal ? "text-rose-600" : "text-emerald-800"
                   }`}
                 >
                   {cashGiven < grandTotal
