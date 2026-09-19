@@ -335,13 +335,13 @@ export default function POSPage() {
 
           {/* Catalog Content */}
           {isLoading ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3">
-              {[...Array(8)].map((_, i) => (
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {[...Array(6)].map((_, i) => (
                 <div
                   key={i}
-                  className="h-44 rounded-lg border border-slate-200 bg-white p-2.5 animate-pulse flex flex-col justify-between"
+                  className="rounded-lg border border-slate-200 bg-white p-2.5 animate-pulse flex flex-col justify-between"
                 >
-                  <div className="w-full h-20 bg-slate-100 rounded mb-2 shrink-0" />
+                  <div className="w-full h-32 sm:h-36 bg-slate-100 rounded-md mb-2 shrink-0" />
                   <div className="space-y-1.5 flex-1">
                     <div className="h-2.5 bg-slate-100 rounded w-1/3" />
                     <div className="h-3.5 bg-slate-100 rounded w-3/4" />
@@ -364,8 +364,8 @@ export default function POSPage() {
               </p>
             </div>
           ) : viewMode === "grid" ? (
-            /* Mode 1: Grid Compact (8-12 produk langsung terlihat) */
-            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-3">
+            /* Mode 1: Grid 3 Kolom */
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
               {filteredProducts.map((product) => {
                 const isOutOfStock = product.stock <= 0;
                 const qtyInCart = cart.get(product._id) || 0;
@@ -382,13 +382,13 @@ export default function POSPage() {
                         : "border-slate-200 shadow-xs hover:border-emerald-400 hover:shadow-sm"
                     }`}
                   >
-                    {/* Compact Image Container */}
-                    <div className="w-full h-20 mb-2 rounded overflow-hidden bg-slate-100 border border-slate-100 shrink-0 relative">
+                    {/* Image Container with Full Contain (No Crop) */}
+                    <div className="w-full h-32 sm:h-36 mb-2 rounded-md overflow-hidden bg-slate-50 border border-slate-100 shrink-0 relative flex items-center justify-center">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={product.image || "/placeholder.png"}
                         alt={product.name}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain p-1.5 transition-transform duration-200 group-hover:scale-105"
                         onError={(e) => {
                           (e.target as HTMLImageElement).src = "/placeholder.png";
                         }}
@@ -484,7 +484,7 @@ export default function POSPage() {
                               title="Tambah ke keranjang"
                             >
                               <Plus className="w-3 h-3" />
-                              <span className="hidden xl:inline">Tambah</span>
+                              <span className="hidden sm:inline">Tambah</span>
                             </button>
                           )}
                         </div>
@@ -515,12 +515,12 @@ export default function POSPage() {
                   >
                     {/* Left: Thumbnail + Name + SKU */}
                     <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                      <div className="w-10 h-10 rounded overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
+                      <div className="w-10 h-10 rounded overflow-hidden bg-slate-50 border border-slate-200 shrink-0 flex items-center justify-center p-0.5">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={product.image || "/placeholder.png"}
                           alt={product.name}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-contain"
                           onError={(e) => {
                             (e.target as HTMLImageElement).src = "/placeholder.png";
                           }}

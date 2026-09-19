@@ -180,8 +180,19 @@ export default function ProductsPage() {
 
       if (selectedImage) {
         setIsUploadingImage(true);
-        const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "";
-        const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "";
+        let cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "";
+        let uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "";
+
+        if (!cloudName || !uploadPreset) {
+          try {
+            const cfgRes = await fetch("/api/config/cloudinary");
+            if (cfgRes.ok) {
+              const cfg = await cfgRes.json();
+              cloudName = cfg.cloudName || cloudName;
+              uploadPreset = cfg.uploadPreset || uploadPreset;
+            }
+          } catch {}
+        }
 
         if (!cloudName || !uploadPreset) {
           setIsUploadingImage(false);
@@ -398,12 +409,12 @@ export default function ProductsPage() {
                       className="hover:bg-slate-50/80 transition-colors"
                     >
                       <td className="py-2.5 px-3.5 text-center">
-                        <div className="w-9 h-9 rounded border border-slate-200 overflow-hidden bg-slate-100 mx-auto shrink-0">
+                        <div className="w-9 h-9 rounded border border-slate-200 overflow-hidden bg-slate-50 mx-auto shrink-0 flex items-center justify-center p-0.5">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={p.image || "/placeholder.png"}
                             alt={p.name}
-                            className="w-full h-full object-cover scale-[1.02]"
+                            className="w-full h-full object-contain"
                             onError={(e) => {
                               (e.target as HTMLImageElement).src = "/placeholder.png";
                             }}
@@ -516,12 +527,12 @@ export default function ProductsPage() {
             </label>
             <div className="flex items-center gap-3">
               {(selectedImage || formData.image) && (
-                <div className="w-12 h-12 rounded-lg border border-slate-200 overflow-hidden shrink-0 bg-slate-100">
+                <div className="w-14 h-14 rounded-lg border border-slate-200 overflow-hidden shrink-0 bg-slate-50 flex items-center justify-center p-1">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img 
                     src={selectedImage ? URL.createObjectURL(selectedImage) : formData.image} 
                     alt="Preview" 
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                   />
                 </div>
               )}
