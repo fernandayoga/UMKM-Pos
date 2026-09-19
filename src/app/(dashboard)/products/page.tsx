@@ -180,10 +180,17 @@ export default function ProductsPage() {
 
       if (selectedImage) {
         setIsUploadingImage(true);
+        const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "";
+        const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "";
+
+        if (!cloudName || !uploadPreset) {
+          setIsUploadingImage(false);
+          throw new Error("Konfigurasi Cloudinary belum lengkap. Harap isi NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME dan NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET di file .env.local");
+        }
+
         const uploadData = new FormData();
         uploadData.append("file", selectedImage);
-        uploadData.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "");
-        const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "";
+        uploadData.append("upload_preset", uploadPreset);
 
         const uploadRes = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
           method: "POST",

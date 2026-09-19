@@ -539,7 +539,7 @@ export default function InventoryPage() {
               placeholder="Cari nama produk atau SKU..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full h-10 pl-10 pr-3.5 rounded-lg border border-slate-300 bg-white text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1.5 focus:ring-emerald-600 focus:border-transparent transition-all"
+              className="w-full h-10 pl-10 pr-3.5 rounded-lg border border-slate-300 bg-white text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 transition-colors"
             />
           </div>
 
@@ -548,7 +548,7 @@ export default function InventoryPage() {
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="w-full h-10 px-3 text-xs rounded-lg border border-slate-300 bg-white text-slate-700 focus:outline-none focus:ring-1.5 focus:ring-emerald-600 cursor-pointer transition-all"
+              className="w-full h-10 px-3 text-xs rounded-lg border border-slate-300 bg-white text-slate-700 focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 cursor-pointer transition-colors"
             >
               <option value="all">Semua Kategori</option>
               {categories.map((cat) => (

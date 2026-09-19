@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Sparkles, X, Send, Bot, User as UserIcon, RotateCcw, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { MarkdownMessage } from "./MarkdownMessage";
 
 export interface AIAssistantDrawerProps {
   isOpen: boolean;
@@ -212,13 +213,13 @@ export function AIAssistantDrawer({ isOpen, onClose }: AIAssistantDrawerProps) {
 
               <div
                 className={cn(
-                  "p-3.5 rounded-xl max-w-[85%] leading-relaxed whitespace-pre-line text-xs font-normal",
+                  "p-3 rounded-xl leading-relaxed text-xs font-normal",
                   msg.role === "user"
-                    ? "bg-emerald-600 text-white rounded-tr-none"
-                    : "bg-slate-100 text-slate-800 rounded-tl-none border border-slate-200/60"
+                    ? "bg-emerald-600 text-white rounded-tr-none max-w-[85%]"
+                    : "bg-slate-50 text-slate-800 rounded-tl-none border border-slate-200/90 shadow-2xs max-w-[94%] w-full"
                 )}
               >
-                {msg.content}
+                <MarkdownMessage content={msg.content} isUser={msg.role === "user"} />
               </div>
             </div>
           ))}

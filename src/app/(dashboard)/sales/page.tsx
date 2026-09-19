@@ -248,8 +248,8 @@ export default function SalesHistoryPage() {
                   <span>TOTAL:</span>
                   <span>{formatRupiah(selectedSale.total)}</span>
                 </div>
-                <div className="flex justify-between capitalize">
-                  <span>Bayar ({selectedSale.paymentMethod}):</span>
+                <div className="flex justify-between">
+                  <span>Bayar ({selectedSale.paymentMethod === "cash" ? "Tunai" : selectedSale.paymentMethod}):</span>
                   <span>{formatRupiah(selectedSale.paidAmount)}</span>
                 </div>
                 <div className="flex justify-between">
@@ -272,10 +272,17 @@ export default function SalesHistoryPage() {
               >
                 Tutup
               </Button>
-              <Button size="sm" onClick={handlePrint}>
-                <Printer className="w-3.5 h-3.5 mr-1" />
-                <span>Cetak Nota</span>
-              </Button>
+              <div title="Integrasi printer thermal (Bluetooth/USB) segera hadir" className="cursor-not-allowed">
+                <Button
+                  size="sm"
+                  disabled
+                  variant="outline"
+                  className="text-slate-400 border-slate-200 bg-slate-50 font-medium cursor-not-allowed"
+                >
+                  <Printer className="w-3.5 h-3.5 mr-1 text-slate-400" />
+                  <span>Cetak Nota (Segera Hadir)</span>
+                </Button>
+              </div>
             </div>
           </div>
         )}

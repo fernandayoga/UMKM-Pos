@@ -8,11 +8,11 @@ export const metadata: Metadata = {
   description: "Aplikasi Kasir, Manajemen Stok & AI Business Assistant untuk UMKM",
   icons: {
     icon: [
-      { url: "/logo.png", type: "image/png" },
-      { url: "/favicon.ico" },
+      { url: "/favicon.ico?v=2", sizes: "any" },
+      { url: "/logoUMKM.png?v=2", type: "image/png" },
     ],
-    shortcut: "/favicon.ico",
-    apple: "/logo.png",
+    shortcut: "/favicon.ico?v=2",
+    apple: "/logoUMKM.png?v=2",
   },
 };
 

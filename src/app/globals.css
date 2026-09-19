@@ -113,3 +113,26 @@ body {
     color: black !important;
   }
 }
+
+/* Content Area Typography & Contrast Optimization (Anti-washout on white background) */
+header .text-slate-400,
+main .text-slate-400 {
+  color: #475569; /* Upgrade faint #94a3b8 to crisp Slate-600 (contrast > 5.5:1) */
+}
+
+header .text-slate-500,
+main .text-slate-500 {
+  color: #334155; /* Upgrade #64748b to high-contrast Slate-700 (contrast > 9:1) */
+}
+
+header .text-slate-600,
+main .text-slate-600 {
+  color: #1e293b; /* Upgrade to authoritative Slate-800 */
+}
+
+main input::placeholder,
+main textarea::placeholder,
+main .placeholder\:text-slate-400::placeholder {
+  color: #64748b; /* Clear, visible input placeholders */
+}
+

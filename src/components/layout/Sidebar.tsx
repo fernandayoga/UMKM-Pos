@@ -18,7 +18,7 @@ import {
   Settings,
   X,
   LogOut,
-  Sparkles,
+  Bot,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -120,22 +120,22 @@ export function Sidebar({ isOpen, onClose, onOpenAI }: SidebarProps) {
       {/* Sidebar Container */}
       <aside
         className={cn(
-          "fixed top-0 bottom-0 left-0 z-40 w-64 bg-slate-900 border-r border-slate-800 flex flex-col transition-transform duration-200 ease-in-out lg:translate-x-0 lg:static lg:h-full lg:shrink-0 overflow-hidden select-none",
+          "fixed top-0 bottom-0 left-0 z-40 w-64 bg-[#0c1814] border-r border-[#172e27] flex flex-col transition-transform duration-200 ease-in-out lg:translate-x-0 lg:static lg:h-full lg:shrink-0 overflow-hidden select-none",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
         {/* Brand Header */}
-        <div className="h-14 shrink-0 flex items-center justify-between px-4 sm:px-5 border-b border-slate-800/80">
+        <div className="h-14 shrink-0 flex items-center justify-between px-4 sm:px-5 border-b border-[#172e27]/80">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center bg-white border border-slate-700 shadow-xs shrink-0">
+            <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center bg-white border border-[#172e27] shadow-xs shrink-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo.png" alt="Logo UMKM POS" className="w-full h-full object-contain p-0.5" />
+              <img src="/logoUMKM.png" alt="Logo UMKM POS" className="w-full h-full object-contain p-0.5" />
             </div>
             <div>
               <span className="font-extrabold text-[14px] tracking-tight text-white block leading-none">
                 UMKM POS
               </span>
-              <span className="text-[10px] text-slate-300 font-semibold tracking-wider uppercase leading-none mt-1 block">
+              <span className="text-[10px] text-emerald-200/75 font-semibold tracking-wider uppercase leading-none mt-1 block">
                 Retail & Inventory
               </span>
             </div>
@@ -163,7 +163,7 @@ export function Sidebar({ isOpen, onClose, onOpenAI }: SidebarProps) {
                   "group flex items-center justify-between px-3 py-2 rounded-lg text-[13px] font-semibold tracking-tight transition-all select-none",
                   isActive
                     ? "bg-emerald-600 text-white font-bold shadow-xs"
-                    : "text-slate-200 hover:bg-slate-800/90 hover:text-white"
+                    : "text-slate-200 hover:bg-[#152a22] hover:text-white"
                 )}
               >
                 <div className="flex items-center gap-2.5">
@@ -172,7 +172,7 @@ export function Sidebar({ isOpen, onClose, onOpenAI }: SidebarProps) {
                       "w-[18px] h-[18px] shrink-0 transition-colors",
                       isActive
                         ? "text-white"
-                        : "text-slate-300 group-hover:text-white"
+                        : "text-emerald-400/70 group-hover:text-white"
                     )}
                     strokeWidth={isActive ? 2.2 : 2}
                   />
@@ -188,10 +188,10 @@ export function Sidebar({ isOpen, onClose, onOpenAI }: SidebarProps) {
                 onClose();
                 onOpenAI();
               }}
-              className="group flex items-center justify-between w-full px-3 py-2 rounded-lg text-[13px] font-bold text-emerald-400 bg-emerald-950/40 hover:bg-emerald-950/70 border border-emerald-500/30 shadow-xs transition-all mt-2.5"
+              className="group flex items-center justify-between w-full px-3 py-2 rounded-lg text-[13px] font-bold text-emerald-300 bg-[#152a22]/70 hover:bg-[#152a22] border border-emerald-500/25 shadow-xs transition-all mt-2.5"
             >
               <div className="flex items-center gap-2.5">
-                <Sparkles className="w-[18px] h-[18px] shrink-0 text-emerald-400" strokeWidth={2.2} />
+                <Bot className="w-[18px] h-[18px] shrink-0 text-emerald-400" strokeWidth={2.2} />
                 <span>AI Assistant</span>
               </div>
               <span className="px-1.5 py-0.5 text-[9px] font-extrabold bg-emerald-500 text-slate-950 rounded shadow-2xs">
@@ -202,10 +202,10 @@ export function Sidebar({ isOpen, onClose, onOpenAI }: SidebarProps) {
         </nav>
 
         {/* Logout Button */}
-        <div className="p-3 shrink-0 border-t border-slate-800/80">
+        <div className="p-3 shrink-0 border-t border-[#172e27]/80">
           <button
             onClick={() => signOut({ callbackUrl: "/login" })}
-            className="flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-[13px] font-semibold text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 transition-colors"
+            className="flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-[13px] font-semibold text-rose-300 hover:text-rose-200 hover:bg-rose-950/30 transition-colors"
           >
             <LogOut className="w-[18px] h-[18px] shrink-0" strokeWidth={2} />
             <span>Keluar Akun</span>

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Menu, Calendar, Sparkles } from "lucide-react";
+import { Menu, Calendar } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { formatDate, cn } from "@/lib/utils";
 

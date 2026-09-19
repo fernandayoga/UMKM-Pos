@@ -10,9 +10,7 @@ import {
   CheckCircle,
   Printer,
   RotateCcw,
-  CreditCard,
   Banknote,
-  QrCode,
   Package,
   X,
   LayoutGrid,
@@ -727,7 +725,7 @@ export default function POSPage() {
         isOpen={isPaymentOpen}
         onClose={() => setIsPaymentOpen(false)}
         title="Pembayaran Transaksi"
-        description="Pilih metode pembayaran dan masukkan jumlah uang yang diterima dari pelanggan."
+        description="Masukkan jumlah uang tunai yang diterima dari pelanggan."
         maxWidth="md"
       >
         <div className="space-y-4">
@@ -744,114 +742,70 @@ export default function POSPage() {
             </span>
           </div>
 
-          {/* Payment Method Selector */}
+          {/* Payment Method - Tunai Only */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-2">
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
               Metode Pembayaran
             </label>
-            <div className="grid grid-cols-3 gap-2">
-              <button
-                type="button"
-                onClick={() => setPaymentMethod("cash")}
-                className={`p-2.5 rounded-lg border text-center text-xs font-medium flex flex-col items-center gap-1.5 transition-colors ${
-                  paymentMethod === "cash"
-                    ? "border-emerald-700 bg-emerald-50 text-emerald-800 font-bold"
-                    : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
-                }`}
-              >
-                <Banknote className="w-4 h-4" />
-                <span>Tunai (Cash)</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setPaymentMethod("qris");
-                  setCashGiven(grandTotal);
-                }}
-                className={`p-2.5 rounded-lg border text-center text-xs font-medium flex flex-col items-center gap-1.5 transition-colors ${
-                  paymentMethod === "qris"
-                    ? "border-emerald-700 bg-emerald-50 text-emerald-800 font-bold"
-                    : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
-                }`}
-              >
-                <QrCode className="w-4 h-4" />
-                <span>QRIS</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setPaymentMethod("transfer");
-                  setCashGiven(grandTotal);
-                }}
-                className={`p-2.5 rounded-lg border text-center text-xs font-medium flex flex-col items-center gap-1.5 transition-colors ${
-                  paymentMethod === "transfer"
-                    ? "border-emerald-700 bg-emerald-50 text-emerald-800 font-bold"
-                    : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
-                }`}
-              >
-                <CreditCard className="w-4 h-4" />
-                <span>Transfer Bank</span>
-              </button>
+            <div className="flex items-center gap-2 p-2.5 rounded-lg border border-emerald-600 bg-emerald-50/70 text-emerald-800 text-xs font-bold">
+              <Banknote className="w-4 h-4 text-emerald-700" />
+              <span>Tunai (Cash)</span>
             </div>
           </div>
 
           {/* Cash Input & Quick Denomination Buttons */}
-          {paymentMethod === "cash" && (
-            <div className="space-y-3">
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                  Uang Diterima (Rp)
-                </label>
-                <input
-                  type="number"
-                  min="0"
-                  step="1000"
-                  value={cashGiven || ""}
-                  onChange={(e) => setCashGiven(Number(e.target.value) || 0)}
-                  className="w-full h-10 px-3 text-sm font-semibold rounded-lg border border-slate-300 font-mono tabular-nums focus:outline-none focus:ring-2 focus:ring-emerald-600"
-                  placeholder="Masukkan jumlah pembayaran"
-                  autoFocus
-                />
-              </div>
-
-              {/* Quick Cash Buttons */}
-              <div className="flex flex-wrap gap-1.5">
-                <button
-                  type="button"
-                  onClick={() => setCashGiven(grandTotal)}
-                  className="px-2.5 py-1 text-xs bg-slate-100 hover:bg-slate-200 rounded border border-slate-200 font-medium text-slate-700"
-                >
-                  Uang Pas
-                </button>
-                {[10000, 20000, 50000, 100000].map((amount) => (
-                  <button
-                    key={amount}
-                    type="button"
-                    onClick={() => setCashGiven((prev) => (prev > 0 ? prev + amount : amount))}
-                    className="px-2.5 py-1 text-xs bg-white hover:bg-slate-50 rounded border border-slate-200 text-slate-700 font-mono tabular-nums font-medium"
-                  >
-                    +{formatRupiah(amount)}
-                  </button>
-                ))}
-              </div>
-
-              {/* Kembalian calculation display */}
-              <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 flex justify-between items-center text-xs">
-                <span className="font-medium text-slate-600">Kembalian:</span>
-                <span
-                  className={`text-sm font-bold font-mono tabular-nums ${
-                    cashGiven < grandTotal ? "text-rose-600" : "text-emerald-800"
-                  }`}
-                >
-                  {cashGiven < grandTotal
-                    ? `Kurang ${formatRupiah(grandTotal - cashGiven)}`
-                    : formatRupiah(changeDue)}
-                </span>
-              </div>
+          <div className="space-y-3">
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                Uang Diterima (Rp)
+              </label>
+              <input
+                type="number"
+                min="0"
+                step="1000"
+                value={cashGiven || ""}
+                onChange={(e) => setCashGiven(Number(e.target.value) || 0)}
+                className="w-full h-10 px-3 text-sm font-semibold rounded-lg border border-slate-300 font-mono tabular-nums focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                placeholder="Masukkan jumlah pembayaran"
+                autoFocus
+              />
             </div>
-          )}
+
+            {/* Quick Cash Buttons */}
+            <div className="flex flex-wrap gap-1.5">
+              <button
+                type="button"
+                onClick={() => setCashGiven(grandTotal)}
+                className="px-2.5 py-1 text-xs bg-slate-100 hover:bg-slate-200 rounded border border-slate-200 font-medium text-slate-700"
+              >
+                Uang Pas
+              </button>
+              {[10000, 20000, 50000, 100000].map((amount) => (
+                <button
+                  key={amount}
+                  type="button"
+                  onClick={() => setCashGiven((prev) => (prev > 0 ? prev + amount : amount))}
+                  className="px-2.5 py-1 text-xs bg-white hover:bg-slate-50 rounded border border-slate-200 text-slate-700 font-mono tabular-nums font-medium"
+                >
+                  +{formatRupiah(amount)}
+                </button>
+              ))}
+            </div>
+
+            {/* Kembalian calculation display */}
+            <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 flex justify-between items-center text-xs">
+              <span className="font-medium text-slate-600">Kembalian:</span>
+              <span
+                className={`text-sm font-bold font-mono tabular-nums ${
+                  cashGiven < grandTotal ? "text-rose-600" : "text-emerald-800"
+                }`}
+              >
+                {cashGiven < grandTotal
+                  ? `Kurang ${formatRupiah(grandTotal - cashGiven)}`
+                  : formatRupiah(changeDue)}
+              </span>
+            </div>
+          </div>
 
           {/* Action buttons */}
           <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
@@ -865,7 +819,7 @@ export default function POSPage() {
             <Button
               onClick={handleCheckoutSubmit}
               isLoading={isProcessing}
-              disabled={paymentMethod === "cash" && cashGiven < grandTotal}
+              disabled={cashGiven < grandTotal}
             >
               <CheckCircle className="w-4 h-4 mr-1" />
               <span>Selesaikan Transaksi</span>
@@ -942,8 +896,8 @@ export default function POSPage() {
                   <span>TOTAL:</span>
                   <span>{formatRupiah(completedSale.total)}</span>
                 </div>
-                <div className="flex justify-between capitalize">
-                  <span>Bayar ({completedSale.paymentMethod}):</span>
+                <div className="flex justify-between">
+                  <span>Bayar ({completedSale.paymentMethod === "cash" ? "Tunai" : completedSale.paymentMethod}):</span>
                   <span>{formatRupiah(completedSale.paidAmount)}</span>
                 </div>
                 <div className="flex justify-between">
@@ -959,7 +913,6 @@ export default function POSPage() {
               </div>
             </div>
 
-            {/* Actions */}
             <div className="flex items-center justify-between gap-2 pt-2">
               <Button
                 variant="outline"
@@ -969,10 +922,17 @@ export default function POSPage() {
                 <RotateCcw className="w-3.5 h-3.5 mr-1" />
                 <span>Transaksi Baru</span>
               </Button>
-              <Button size="sm" onClick={handlePrint}>
-                <Printer className="w-3.5 h-3.5 mr-1" />
-                <span>Cetak Nota</span>
-              </Button>
+              <div title="Integrasi printer thermal (Bluetooth/USB) segera hadir" className="cursor-not-allowed">
+                <Button
+                  size="sm"
+                  disabled
+                  variant="outline"
+                  className="text-slate-400 border-slate-200 bg-slate-50 font-medium cursor-not-allowed"
+                >
+                  <Printer className="w-3.5 h-3.5 mr-1 text-slate-400" />
+                  <span>Cetak Nota (Segera Hadir)</span>
+                </Button>
+              </div>
             </div>
           </div>
         )}
