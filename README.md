@@ -4,23 +4,6 @@ Aplikasi Kasir (Point of Sale) dan Manajemen Inventori berbasis web yang diranca
 
 ---
 
-## 📌 Daftar Isi
-- [Spesifikasi Teknis](#-spesifikasi-teknis)
-- [Teknologi yang Digunakan](#-teknologi-yang-digunakan)
-- [Fitur Utama](#-fitur-utama)
-- [Struktur Direktori](#-struktur-direktori)
-- [Prasyarat Sistem](#-prasyarat-sistem)
-- [Panduan Instalasi & Menjalankan Aplikasi](#-panduan-instalasi--menjalankan-aplikasi)
-  - [1. Clone Repository](#1-clone-repository)
-  - [2. Install Dependencies](#2-install-dependencies)
-  - [3. Konfigurasi Environment Variables (.env.local)](#3-konfigurasi-environment-variables-envlocal)
-  - [4. Seeding Data Awal (Opsional)](#4-seeding-data-awal-opsional)
-  - [5. Menjalankan Server Development](#5-menjalankan-server-development)
-  - [6. Membangun Versi Produksi (Production Build)](#6-membangun-versi-produksi-production-build)
-- [Akun Pengguna Default](#-akun-pengguna-default)
-- [Lisensi](#-lisensi)
-
----
 
 ## ⚙️ Spesifikasi Teknis
 
